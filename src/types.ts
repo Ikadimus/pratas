@@ -19,6 +19,15 @@ export interface Product {
   discountPercentage?: number;
   discountStart?: string;
   discountEnd?: string;
+  description?: string;
+  material?: string;
+  finish?: string;
+  dimensions?: string;
+  weight?: string;
+  stone?: string;
+  warranty?: string;
+  packaging?: string;
+  hypoallergenic?: string;
 }
 
 export interface SaleItem {

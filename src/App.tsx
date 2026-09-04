@@ -31,7 +31,6 @@ import {
   Lock,
   Check,
   Eye,
-  Star,
   ShoppingBag,
   ArrowRight,
   ArrowLeft,
@@ -40,7 +39,17 @@ import {
   Phone,
   Instagram,
   Facebook,
-  MessageCircle
+  MessageCircle,
+  Minus,
+  ShieldCheck,
+  Truck,
+  CheckCircle2,
+  Percent,
+  Image as ImageIcon,
+  Gem,
+  Scale,
+  Ruler,
+  Gift
 } from "lucide-react";
 import { 
   BarChart, 
@@ -141,33 +150,317 @@ export default function App() {
     ];
     
     const initialUsers: User[] = [
+      { id: "demo", email: "teste", password: "teste", roleId: "admin" },
       { id: "1", email: "b@b", password: "123", roleId: "admin" }
     ];
 
-    const defaultAboutUs = "Somos uma empresa dedicada a oferecer as melhores joias em prata.";
-    const defaultSilverCare = "Para manter sua prata sempre brilhante, evite contato com produtos químicos.";
+    const defaultAboutUs = "Bem-vindo à PrataGestão Joias! Somos especialistas em Prata 925 legítima, trazendo sofisticação, delicadeza e elegância em cada detalhe. Nossa missão é oferecer joias atemporais de altíssima qualidade com design moderno, garantindo durabilidade e um brilho eterno para todas as ocasiões de sua vida.";
+    const defaultSilverCare = "Como cuidar de suas Joias de Prata 925:\n\n1. Evite o contato com produtos químicos, perfumes, cosméticos e produtos de limpeza.\n2. Retire suas peças antes de tomar banho, entrar na piscina ou no mar.\n3. Limpe suas joias periodicamente com uma flanela mágica macia ou use produtos específicos para limpeza de prata (como o Limpa Pratas Monzi).\n4. Guarde suas joias individualmente em saquinhos de veludo ou caixas fechadas, protegidas da luz e da umidade, para evitar a oxidação natural.";
     const defaultContacts = {
-      whatsapp: "",
-      instagram: "",
-      facebook: "",
-      email: "",
-      phone: ""
+      whatsapp: "https://wa.me/5511999999999",
+      instagram: "https://instagram.com/pratagestao",
+      facebook: "https://facebook.com/pratagestao",
+      email: "contato@pratagestao.com.br",
+      phone: "(11) 99999-9999"
+    };
+
+    const initialProducts: Product[] = [
+      {
+        id: "prod-1",
+        name: "Anel Solitário Prata 925 Cravejado",
+        category: "Anel",
+        sellingPricePerUnit: 129.90,
+        costPerUnit: 45.00,
+        stock: 18,
+        discountPercentage: 15,
+        imageUrl: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=600&auto=format&fit=crop",
+        description: "O clássico atemporal que nunca sai de moda. O Anel Solitário em Prata 925 legítima possui uma zircônia central lapidada com brilho intenso, realçado por microcravitações no aro que capturam a luz de todos os ângulos. Perfeito para pedidos especiais, presentes marcantes ou para compor um mix elegante no dia a dia.",
+        material: "Prata de Lei 925 Legítima",
+        finish: "Polimento Espelhado de Alta Precisão",
+        dimensions: "Aro 17 (Ajustável entre 16 e 18)",
+        weight: "2.8g",
+        stone: "Zircônia Cúbica Central 6mm Cravejada 5A",
+        hypoallergenic: "Sim (100% Livre de Níquel e Chumbo)",
+        packaging: "Caixa Rígida Aveludada + Certificado de Autenticidade",
+        warranty: "Garantia Vitalícia da Autenticidade da Prata 925"
+      },
+      {
+        id: "prod-2",
+        name: "Colar Corrente Veneziana 45cm",
+        category: "Colar",
+        sellingPricePerUnit: 89.90,
+        costPerUnit: 30.00,
+        stock: 25,
+        imageUrl: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600&auto=format&fit=crop",
+        description: "Corrente veneziana tradicional confeccionada em Prata 925 maciça com elos quadrados perfeitamente simétricos e entrelaçamento refinado. Possui brilho fluido extraordinário e caimento impecável no colo. Ideal para ser usada sozinha como ponto de luz ou acompanhada do seu pingente favorito.",
+        material: "Prata de Lei 925 Legítima",
+        finish: "Polimento Italiano Espelhado",
+        dimensions: "Comprimento 45cm | Espessura 1.0mm",
+        weight: "3.2g",
+        stone: "Sem pedras (Design em malha contínua)",
+        hypoallergenic: "Sim (Antialérgica / Hipoalergênica)",
+        packaging: "Saquinho de Veludo PrataGestão + Certificado",
+        warranty: "Garantia Vitalícia da Autenticidade da Prata 925"
+      },
+      {
+        id: "prod-3",
+        name: "Brinco Argola Fio Quadrado G",
+        category: "Brinco",
+        sellingPricePerUnit: 119.90,
+        costPerUnit: 40.00,
+        stock: 14,
+        imageUrl: "https://images.unsplash.com/photo-1630019852942-f89202989a59?q=80&w=600&auto=format&fit=crop",
+        description: "Argola geométrica moderna com design em fio quadrado que une minimalismo contemporâneo e presença sofisticada. Leve e confortável para uso prolongado, possui fecho click seguro e estrutura resistente. Uma peça curinga para elevar qualquer visual do casual à festa.",
+        material: "Prata de Lei 925 Legítima",
+        finish: "Polimento Espelhado com Proteção Antioxidante",
+        dimensions: "Diâmetro Externo 28mm | Espessura 2.2mm",
+        weight: "4.1g (o par)",
+        stone: "Sem pedras (Fio maciço trabalhado)",
+        hypoallergenic: "Sim (Sem níquel, ideal para orelhas sensíveis)",
+        packaging: "Saquinho de Veludo Premium + Certificado",
+        warranty: "Garantia Vitalícia da Autenticidade da Prata 925"
+      },
+      {
+        id: "prod-4",
+        name: "Pulseira Masculina Grumet 21cm",
+        category: "Pulseira",
+        sellingPricePerUnit: 249.90,
+        costPerUnit: 95.00,
+        stock: 8,
+        imageUrl: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600&auto=format&fit=crop",
+        description: "Pulseira com malha Grumet diamantada com elos duplos achatados que oferecem imponência e sofisticação sóbria. Conta com fecho gaveta com trava de segurança dupla, proporcionando conforto absoluto e máxima confiabilidade no pulso.",
+        material: "Prata de Lei 925 Legítima Maciça",
+        finish: "Diamantado com Polimento Especial",
+        dimensions: "Comprimento 21cm | Largura dos elos 6.5mm",
+        weight: "14.8g",
+        stone: "Sem pedras (Prata maciça com facetas diamantadas)",
+        hypoallergenic: "Sim (100% Livre de Metais Pesados)",
+        packaging: "Estojo Luxo PrataGestão + Certificado de Autenticidade",
+        warranty: "Garantia Vitalícia da Autenticidade da Prata 925"
+      },
+      {
+        id: "prod-5",
+        name: "Conjunto Gota Fusion Esmeralda",
+        category: "Jogo",
+        sellingPricePerUnit: 389.90,
+        costPerUnit: 140.00,
+        stock: 6,
+        isSet: true,
+        discountPercentage: 20,
+        imageUrl: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=600&auto=format&fit=crop",
+        description: "Conjunto deslumbrante composto por colar e par de brincos com pedras centrais fusion no tom verde esmeralda colombiana, circundadas por halo de microzircônias translúcidas cravejadas manualmente. Um conjunto aristocrático projetado para momentos inesquecíveis.",
+        material: "Prata de Lei 925 com Banho de Ródio Branco",
+        finish: "Ródio Nobre e Cravação Pavê Manual",
+        dimensions: "Corrente 45cm + 5cm | Pingente 18x12mm | Brincos 14x10mm",
+        weight: "8.5g (conjunto completo)",
+        stone: "Cristais Fusion Esmeralda + Microzircônias 5A",
+        hypoallergenic: "Sim (Camada nobre de ródio antialérgico)",
+        packaging: "Estojo Completo de Veludo + Certificado Gemológico e do Metal",
+        warranty: "Garantia Vitalícia do Metal e 1 Ano de Cravação",
+        components: [
+          { id: "comp-1", name: "Colar Gota Fusion Esmeralda", costPerUnit: 80.00, sellingPricePerUnit: 220.00, quantity: 1 },
+          { id: "comp-2", name: "Brincos Gota Fusion Esmeralda", costPerUnit: 60.00, sellingPricePerUnit: 169.90, quantity: 1 }
+        ]
+      },
+      {
+        id: "prod-6",
+        name: "Pingente Mandala Árvore da Vida",
+        category: "Pingente",
+        sellingPricePerUnit: 59.90,
+        costPerUnit: 18.00,
+        stock: 32,
+        imageUrl: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=600&auto=format&fit=crop",
+        description: "Símbolo milenar de renovação, sabedoria e conexão familiar esculpido a laser em Prata 925 com detalhes vazados e borda trabalhada em micropontos de luz. Uma joia afetiva com profundo significado e acabamento artesanal de alto nível.",
+        material: "Prata de Lei 925 Legítima",
+        finish: "Corte a Laser com Acabamento Acetinado e Bordas Polidas",
+        dimensions: "Diâmetro 22mm (Passador compatível até 3mm)",
+        weight: "2.1g",
+        stone: "Sem pedras (Escultura vazada de alta definição)",
+        hypoallergenic: "Sim (100% Livre de Níquel)",
+        packaging: "Saquinho de Algodão Cru com Tag e Certificado",
+        warranty: "Garantia Vitalícia da Autenticidade da Prata 925"
+      },
+      {
+        id: "prod-7",
+        name: "Pulseira Riviera Cravejada Zircônia",
+        category: "Pulseira",
+        sellingPricePerUnit: 329.90,
+        costPerUnit: 120.00,
+        stock: 11,
+        discountPercentage: 10,
+        imageUrl: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=600&auto=format&fit=crop",
+        description: "A icônica pulseira Riviera com fileira contínua de zircônias cúbicas lapidadas em brilhante, montadas individualmente em chatões articulados com quatro garras cada. Oferece flexibilidade perfeita no contorno do pulso e brilho cintilante comparável a diamantes.",
+        material: "Prata de Lei 925 Legítima com Banho de Ródio",
+        finish: "Banho de Ródio Branco com Articulação Flexível",
+        dimensions: "Comprimento 18cm | Largura 2.5mm | Fecho Joalheria Duplo",
+        weight: "9.2g",
+        stone: "Zircônias Cúbicas 2.5mm Alto Brilho Cravação 4 Garras",
+        hypoallergenic: "Sim (100% Hipoalergênico)",
+        packaging: "Estojo Longo Rígido + Certificado de Autenticidade",
+        warranty: "Garantia Vitalícia da Autenticidade da Prata 925"
+      },
+      {
+        id: "prod-8",
+        name: "Anel Minimalista Três Linhas",
+        category: "Anel",
+        sellingPricePerUnit: 79.90,
+        costPerUnit: 24.00,
+        stock: 22,
+        imageUrl: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?q=80&w=600&auto=format&fit=crop",
+        description: "Design arquitetônico contemporâneo apresentando três aros paralelos que se encontram na base, criando o efeito visual de múltiplos anéis em uma única peça ergonômica e marcante. Elegância discreta e moderna para qualquer composição.",
+        material: "Prata de Lei 925 Legítima",
+        finish: "Polimento Alto Brilho Espelhado",
+        dimensions: "Aro 16 (Largura frontal 8mm)",
+        weight: "3.6g",
+        stone: "Sem pedras (Design minimalista escultural)",
+        hypoallergenic: "Sim (Livre de Níquel e Chumbo)",
+        packaging: "Saquinho de Veludo + Certificado de Autenticidade",
+        warranty: "Garantia Vitalícia da Autenticidade da Prata 925"
+      }
+    ];
+
+    const generateDemoData = () => {
+      const sales: Sale[] = [];
+      const expenses: Expense[] = [];
+      const now = new Date();
+      
+      for (let m = 5; m >= 0; m--) {
+        const monthDate = subMonths(now, m);
+        const year = monthDate.getFullYear();
+        const month = monthDate.getMonth();
+        
+        expenses.push({
+          id: `exp-rent-${year}-${month}`,
+          date: new Date(year, month, 5, 10, 0, 0).toISOString(),
+          description: "Aluguel da Loja / Showroom",
+          amount: 1500.00,
+          category: "Aluguel"
+        });
+
+        expenses.push({
+          id: `exp-mkt-${year}-${month}`,
+          date: new Date(year, month, 10, 14, 0, 0).toISOString(),
+          description: "Anúncios Meta Ads (Instagram/Facebook)",
+          amount: Math.round(400.00 + Math.random() * 200),
+          category: "Marketing"
+        });
+
+        expenses.push({
+          id: `exp-sup-${year}-${month}`,
+          date: new Date(year, month, 15, 11, 0, 0).toISOString(),
+          description: "Compra de Prata 925 com Fornecedor",
+          amount: Math.round(2000.00 + Math.random() * 800),
+          category: "Fornecedor"
+        });
+
+        expenses.push({
+          id: `exp-oth-${year}-${month}`,
+          date: new Date(year, month, 22, 16, 0, 0).toISOString(),
+          description: "Embalagens Personalizadas e Sacolas",
+          amount: Math.round(150.00 + Math.random() * 100),
+          category: "Outros"
+        });
+
+        const salesCount = 15 + Math.floor(Math.random() * 10);
+        for (let s = 0; s < salesCount; s++) {
+          const day = 1 + Math.floor(Math.random() * 27);
+          const saleDate = new Date(year, month, day, 10 + Math.floor(Math.random() * 9), Math.floor(Math.random() * 60)).toISOString();
+          
+          const product1 = initialProducts[Math.floor(Math.random() * initialProducts.length)];
+          const product2 = initialProducts[Math.floor(Math.random() * initialProducts.length)];
+          const items = [
+            {
+              productId: product1.id,
+              quantity: 1,
+              priceAtSale: product1.sellingPricePerUnit,
+              nameAtSale: product1.name
+            }
+          ];
+
+          if (Math.random() < 0.4 && product2.id !== product1.id) {
+            items.push({
+              productId: product2.id,
+              quantity: 1,
+              priceAtSale: product2.sellingPricePerUnit,
+              nameAtSale: product2.name
+            });
+          }
+
+          const total = items.reduce((acc, item) => acc + (item.priceAtSale * item.quantity), 0);
+          const methods: ("Crédito" | "Débito" | "Pix" | "Dinheiro")[] = ["Crédito", "Débito", "Pix", "Dinheiro"];
+          const paymentMethod = methods[Math.floor(Math.random() * methods.length)];
+          
+          let feeRate = 0;
+          if (paymentMethod === "Crédito") feeRate = 0.0399;
+          else if (paymentMethod === "Débito") feeRate = 0.0199;
+          
+          const feeAmount = parseFloat((total * feeRate).toFixed(2));
+          const netAmount = parseFloat((total - feeAmount).toFixed(2));
+
+          sales.push({
+            id: `sale-${year}-${month}-${s}`,
+            date: saleDate,
+            items,
+            total,
+            paymentMethod,
+            feeAmount,
+            netAmount
+          });
+        }
+      }
+
+      return { sales, expenses };
     };
 
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         if (parsed && typeof parsed === 'object') {
+          const hasProducts = Array.isArray(parsed.products) && parsed.products.length > 0;
+          const products = hasProducts 
+            ? parsed.products.map((p: Product) => {
+                const init = initialProducts.find(ip => ip.id === p.id);
+                if (init) {
+                  return {
+                    ...init,
+                    ...p,
+                    description: p.description || init.description,
+                    material: p.material || init.material,
+                    finish: p.finish || init.finish,
+                    dimensions: p.dimensions || init.dimensions,
+                    weight: p.weight || init.weight,
+                    stone: p.stone || init.stone,
+                    warranty: p.warranty || init.warranty,
+                    packaging: p.packaging || init.packaging,
+                    hypoallergenic: p.hypoallergenic || init.hypoallergenic,
+                    discountPercentage: p.discountPercentage !== undefined ? p.discountPercentage : init.discountPercentage
+                  };
+                }
+                return p;
+              })
+            : initialProducts;
+          
+          const hasSalesAndExpenses = Array.isArray(parsed.sales) && parsed.sales.length > 0;
+          const { sales: demoSales, expenses: demoExpenses } = generateDemoData();
+          const sales = hasSalesAndExpenses ? parsed.sales : demoSales;
+          const expenses = hasSalesAndExpenses ? parsed.expenses : demoExpenses;
+
+          // Merge initialUsers with parsed.users to ensure 'teste' exists
+          let users = Array.isArray(parsed.users) ? parsed.users : initialUsers;
+          if (!users.some((u: User) => u.email === "teste")) {
+            users = [{ id: "demo", email: "teste", password: "teste", roleId: "admin" }, ...users];
+          }
+
           return {
-            products: Array.isArray(parsed.products) ? parsed.products : [],
-            sales: Array.isArray(parsed.sales) ? parsed.sales : [],
-            expenses: Array.isArray(parsed.expenses) ? parsed.expenses : [],
-            users: Array.isArray(parsed.users) ? parsed.users : initialUsers,
+            products,
+            sales,
+            expenses,
+            users,
             roles: Array.isArray(parsed.roles) ? parsed.roles : initialRoles,
             expenseCategories: Array.isArray(parsed.expenseCategories) ? parsed.expenseCategories : INITIAL_EXPENSE_CATEGORIES,
             productCategories: Array.isArray(parsed.productCategories) ? parsed.productCategories : INITIAL_PRODUCT_CATEGORIES,
-            creditFee: typeof parsed.creditFee === 'number' ? parsed.creditFee : 0,
-            debitFee: typeof parsed.debitFee === 'number' ? parsed.debitFee : 0,
+            creditFee: typeof parsed.creditFee === 'number' ? parsed.creditFee : 3.99,
+            debitFee: typeof parsed.debitFee === 'number' ? parsed.debitFee : 1.99,
             aboutUs: parsed.aboutUs || defaultAboutUs,
             silverCare: parsed.silverCare || defaultSilverCare,
             contacts: parsed.contacts || defaultContacts
@@ -178,16 +471,17 @@ export default function App() {
       }
     }
 
+    const { sales: demoSales, expenses: demoExpenses } = generateDemoData();
     return { 
-      products: [], 
-      sales: [], 
-      expenses: [], 
+      products: initialProducts, 
+      sales: demoSales, 
+      expenses: demoExpenses, 
       users: initialUsers, 
       roles: initialRoles,
       expenseCategories: INITIAL_EXPENSE_CATEGORIES,
       productCategories: INITIAL_PRODUCT_CATEGORIES,
-      creditFee: 0,
-      debitFee: 0,
+      creditFee: 3.99,
+      debitFee: 1.99,
       aboutUs: defaultAboutUs,
       silverCare: defaultSilverCare,
       contacts: defaultContacts
@@ -963,15 +1257,30 @@ function Inventory({ products, categories, onAdd, onUpdate, onDelete, initialVie
 function ProductModal({ product, categories, onClose, onSave }: { product?: Product, categories: string[], onClose: () => void, onSave: (p: Product) => void }) {
   const [formData, setFormData] = useState<Partial<Product>>(product || {
     name: "",
-    category: categories[0] || "Outros",
+    category: categories[0] || "Anel",
     sellingPricePerUnit: 0,
     costPerUnit: 0,
-    stock: 0,
+    stock: 1,
+    imageUrl: "",
+    description: "",
+    material: "Prata de Lei 925 Legítima",
+    finish: "Polimento Espelhado de Alta Precisão",
+    dimensions: "",
+    weight: "",
+    stone: "Sem pedras (Lisa)",
+    hypoallergenic: "Sim (100% Livre de Níquel e Chumbo)",
+    packaging: "Saquinho de Veludo + Certificado de Autenticidade",
+    warranty: "Garantia Vitalícia da Autenticidade da Prata 925",
+    discountPercentage: 0,
+    discountStart: "",
+    discountEnd: "",
     isSet: false,
     components: []
   });
 
   const [newComponent, setNewComponent] = useState({ name: "", costPerUnit: 0, sellingPricePerUnit: 0, quantity: 1 });
+
+  const isJogo = formData.category === "Jogo";
 
   const addComponent = () => {
     if (!newComponent.name.trim()) return;
@@ -1003,150 +1312,426 @@ function ProductModal({ product, categories, onClose, onSave }: { product?: Prod
     });
   };
 
-  const isJogo = formData.category === "Jogo";
+  const selling = formData.sellingPricePerUnit || 0;
+  const cost = formData.costPerUnit || 0;
+  const unitProfit = selling - cost;
+  const grossMargin = selling > 0 ? ((unitProfit / selling) * 100).toFixed(1) : "0";
+  const discount = formData.discountPercentage || 0;
+  const discountedPrice = discount > 0 ? selling * (1 - discount / 100) : selling;
 
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
-        <div className="p-8 border-b border-[#f5f5f5] flex items-center justify-between shrink-0">
-          <h3 className="text-xl font-bold">{product ? "Editar Produto" : "Novo Produto"}</h3>
-          <button onClick={onClose} className="p-2 hover:bg-[#f5f5f5] rounded-full transition-colors">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-white w-full max-w-3xl rounded-[32px] shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col max-h-[92vh] overflow-hidden">
+        {/* Modal Header */}
+        <div className="p-6 sm:p-7 border-b border-[#f0f0f0] flex items-center justify-between shrink-0 bg-[#fafafa]">
+          <div>
+            <h3 className="text-xl font-black text-[#141414] tracking-tight flex items-center gap-2">
+              <Sparkles size={20} className="text-amber-500" />
+              {product ? "Editar Joia / Produto" : "Cadastrar Nova Joia"}
+            </h3>
+            <p className="text-xs text-[#9e9e9e] font-medium mt-0.5">
+              Todos os campos preenchidos aqui alimentam o estoque e o detalhamento completo da vitrine
+            </p>
+          </div>
+          <button 
+            type="button"
+            onClick={onClose} 
+            className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-black hover:bg-gray-100 transition-colors shadow-sm"
+          >
             <X size={20} />
           </button>
         </div>
         
-        <form className="p-8 space-y-6 overflow-y-auto" onSubmit={(e) => {
-          e.preventDefault();
-          onSave({ ...formData, isSet: isJogo } as Product);
-        }}>
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Nome do Produto</label>
-            <input 
-              required
-              type="text" 
-              className="w-full px-4 py-3 bg-[#f5f5f5] border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 outline-none"
-              value={formData.name}
-              onChange={e => setFormData({ ...formData, name: e.target.value })}
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Categoria</label>
-              <select 
-                className="w-full px-4 py-3 bg-[#f5f5f5] border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 outline-none appearance-none"
-                value={formData.category}
-                onChange={e => setFormData({ ...formData, category: e.target.value })}
-              >
-                {categories.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
+        {/* Modal Body */}
+        <form 
+          className="p-6 sm:p-8 space-y-8 overflow-y-auto custom-scrollbar flex-1" 
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSave({ ...formData, isSet: isJogo } as Product);
+          }}
+        >
+          {/* SECTION 1: DADOS PRINCIPAIS E APRESENTAÇÃO */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 pb-2 border-b border-gray-100">
+              <Package size={16} className="text-gray-700" />
+              <h4 className="text-xs font-black uppercase tracking-wider text-gray-800">1. Identificação e Apresentação da Joia</h4>
             </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Estoque Inicial</label>
-              <input 
-                required
-                type="number" 
-                className="w-full px-4 py-3 bg-[#f5f5f5] border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 outline-none"
-                value={formData.stock}
-                onChange={e => setFormData({ ...formData, stock: parseInt(e.target.value) })}
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="sm:col-span-2 space-y-1.5">
+                <label className="text-xs font-bold text-gray-700">Nome da Peça *</label>
+                <input 
+                  required
+                  type="text" 
+                  placeholder="Ex: Anel Solitário Prata 925 Cravejado"
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all"
+                  value={formData.name || ""}
+                  onChange={e => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700">Categoria *</label>
+                <select 
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all"
+                  value={formData.category || categories[0] || "Anel"}
+                  onChange={e => setFormData({ ...formData, category: e.target.value })}
+                >
+                  {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+            </div>
+
+            {/* Image URL & Live Preview */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-gray-700 flex items-center justify-between">
+                <span>Foto da Joia (URL da Imagem)</span>
+                <span className="text-[11px] text-gray-400 font-normal">Link direto para imagem (JPG, PNG, WebP)</span>
+              </label>
+              <div className="flex gap-3 items-center">
+                <div className="w-14 h-14 rounded-2xl bg-[#f5f5f5] border border-gray-200 overflow-hidden shrink-0 flex items-center justify-center">
+                  {formData.imageUrl ? (
+                    <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  ) : (
+                    <ImageIcon size={22} className="text-gray-400" />
+                  )}
+                </div>
+                <input 
+                  type="url" 
+                  placeholder="https://exemplo.com/foto-joia.jpg"
+                  className="flex-1 px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all"
+                  value={formData.imageUrl || ""}
+                  onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
+                />
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-gray-700 flex items-center justify-between">
+                <span>Descrição Completa e História da Peça</span>
+                <span className="text-[11px] text-gray-400 font-normal">Exibido na vitrine pública</span>
+              </label>
+              <textarea 
+                rows={3}
+                placeholder="Descreva a elegância, o design, acabamento e inspirações desta joia. Conte ao cliente o que a torna tão especial..."
+                className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all resize-none"
+                value={formData.description || ""}
+                onChange={e => setFormData({ ...formData, description: e.target.value })}
               />
             </div>
           </div>
 
+          {/* SECTION 2: ESTOQUE E PRECIFICAÇÃO */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 pb-2 border-b border-gray-100">
+              <DollarSign size={16} className="text-gray-700" />
+              <h4 className="text-xs font-black uppercase tracking-wider text-gray-800">2. Estoque e Precificação</h4>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700">Estoque Disponível *</label>
+                <input 
+                  required
+                  type="number" 
+                  min="0"
+                  placeholder="0"
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all font-bold"
+                  value={formData.stock ?? 0}
+                  onChange={e => setFormData({ ...formData, stock: parseInt(e.target.value) || 0 })}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700">Custo Unitário (R$) *</label>
+                <input 
+                  required
+                  type="number" 
+                  step="0.01"
+                  min="0"
+                  readOnly={isJogo}
+                  className={cn(
+                    "w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all font-bold",
+                    isJogo && "opacity-60 cursor-not-allowed"
+                  )}
+                  value={formData.costPerUnit || ""}
+                  onChange={e => setFormData({ ...formData, costPerUnit: parseFloat(e.target.value) || 0 })}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700">Preço de Venda (R$) *</label>
+                <input 
+                  required
+                  type="number" 
+                  step="0.01"
+                  min="0"
+                  readOnly={isJogo}
+                  className={cn(
+                    "w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all font-bold",
+                    isJogo && "opacity-60 cursor-not-allowed"
+                  )}
+                  value={formData.sellingPricePerUnit || ""}
+                  onChange={e => setFormData({ ...formData, sellingPricePerUnit: parseFloat(e.target.value) || 0 })}
+                />
+              </div>
+            </div>
+
+            {/* Profit summary card */}
+            <div className="p-4 bg-gray-50 rounded-2xl border border-gray-200/60 flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-gray-500">Lucro Bruto Unitário:</span>
+                <span className={cn("font-black text-sm", unitProfit >= 0 ? "text-emerald-700" : "text-red-600")}>
+                  {formatCurrency(unitProfit)}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-gray-500">Margem Bruta:</span>
+                <span className="font-black text-sm text-gray-900 bg-white px-2.5 py-1 rounded-xl border border-gray-200">
+                  {grossMargin}%
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* SECTION 3: DESCONTO & PROMOÇÃO */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 pb-2 border-b border-gray-100">
+              <Percent size={16} className="text-gray-700" />
+              <h4 className="text-xs font-black uppercase tracking-wider text-gray-800">3. Promoção e Desconto na Vitrine</h4>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700">Desconto Vitrine (%)</label>
+                <div className="relative">
+                  <input 
+                    type="number" 
+                    min="0"
+                    max="99"
+                    placeholder="0"
+                    className="w-full pl-4 pr-9 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all font-bold"
+                    value={formData.discountPercentage || ""}
+                    onChange={e => setFormData({ ...formData, discountPercentage: parseInt(e.target.value) || 0 })}
+                  />
+                  <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">%</span>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700">Início da Promoção</label>
+                <input 
+                  type="date"
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-xs focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all font-medium"
+                  value={formData.discountStart || ""}
+                  onChange={e => setFormData({ ...formData, discountStart: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700">Fim da Promoção</label>
+                <input 
+                  type="date"
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-xs focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all font-medium"
+                  value={formData.discountEnd || ""}
+                  onChange={e => setFormData({ ...formData, discountEnd: e.target.value })}
+                />
+              </div>
+            </div>
+
+            {discount > 0 && (
+              <div className="p-3.5 bg-red-50/70 border border-red-200/60 rounded-2xl flex items-center justify-between text-xs text-red-950">
+                <span className="font-semibold">
+                  Exibição na Vitrine: De <span className="line-through font-bold text-red-700">{formatCurrency(selling)}</span> por <span className="text-base font-black text-red-900">{formatCurrency(discountedPrice)}</span>
+                </span>
+                <span className="bg-red-500 text-white font-bold px-2.5 py-1 rounded-lg text-[11px]">
+                  -{discount}% OFF
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* SECTION 4: ESPECIFICAÇÕES TÉCNICAS DA JOIA */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 pb-2 border-b border-gray-100">
+              <ShieldCheck size={16} className="text-gray-700" />
+              <h4 className="text-xs font-black uppercase tracking-wider text-gray-800">4. Ficha Técnica da Joia (Detalhamento Completo)</h4>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
+                  <ShieldCheck size={13} className="text-gray-500" /> Metal / Material
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="Ex: Prata de Lei 925 Legítima"
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all"
+                  value={formData.material || ""}
+                  onChange={e => setFormData({ ...formData, material: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
+                  <Sparkles size={13} className="text-gray-500" /> Acabamento
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="Ex: Polimento Espelhado / Banho de Ródio"
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all"
+                  value={formData.finish || ""}
+                  onChange={e => setFormData({ ...formData, finish: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
+                  <Ruler size={13} className="text-gray-500" /> Dimensões / Tamanho
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="Ex: Aro 17 / Corrente 45cm + 5cm / 25mm"
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all"
+                  value={formData.dimensions || ""}
+                  onChange={e => setFormData({ ...formData, dimensions: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
+                  <Scale size={13} className="text-gray-500" /> Peso Aproximado
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="Ex: 3.5g / 14.8g"
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all"
+                  value={formData.weight || ""}
+                  onChange={e => setFormData({ ...formData, weight: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
+                  <Gem size={13} className="text-gray-500" /> Pedras / Gemas / Cravação
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="Ex: Zircônia Cúbica Cravejada 5A / Sem pedras (Lisa)"
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all"
+                  value={formData.stone || ""}
+                  onChange={e => setFormData({ ...formData, stone: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
+                  <CheckCircle2 size={13} className="text-gray-500" /> Certificação Hipoalergênica
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="Ex: Sim (100% Livre de Níquel e Chumbo)"
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all"
+                  value={formData.hypoallergenic || ""}
+                  onChange={e => setFormData({ ...formData, hypoallergenic: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
+                  <Gift size={13} className="text-gray-500" /> Embalagem Inclusa
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="Ex: Saquinho de Veludo + Certificado de Autenticidade"
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all"
+                  value={formData.packaging || ""}
+                  onChange={e => setFormData({ ...formData, packaging: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
+                  <ShieldCheck size={13} className="text-gray-500" /> Termo de Garantia
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="Ex: Garantia Vitalícia da Autenticidade da Prata 925"
+                  className="w-full px-4 py-3 bg-[#f5f5f5] border border-gray-200/80 rounded-2xl text-sm focus:bg-white focus:ring-2 focus:ring-black/10 outline-none transition-all"
+                  value={formData.warranty || ""}
+                  onChange={e => setFormData({ ...formData, warranty: e.target.value })}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* SECTION 5: COMPONENTES DO JOGO (SE FOR CONJUNTO / JOGO) */}
           {isJogo && (
-            <div className="space-y-4 p-6 bg-[#fcfcfc] border border-[#e5e5e5] rounded-2xl">
+            <div className="space-y-4 p-6 bg-amber-50/40 border border-amber-200/60 rounded-3xl">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-bold uppercase tracking-wider">Componentes do Jogo</h4>
-                <span className="text-[10px] font-bold text-[#9e9e9e] uppercase">Administre os itens do conjunto</span>
+                <div>
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-amber-950">Componentes do Jogo / Conjunto</h4>
+                  <p className="text-[11px] text-amber-800 font-medium">Os custos e preços unitários do conjunto são calculados pela soma dos itens</p>
+                </div>
               </div>
               
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {formData.components?.map(c => (
-                  <div key={c.id} className="flex items-center justify-between p-3 bg-white border border-[#e5e5e5] rounded-xl">
+                  <div key={c.id} className="flex items-center justify-between p-3.5 bg-white border border-amber-100 rounded-2xl shadow-sm">
                     <div className="flex-1">
-                      <p className="text-xs font-bold">{c.name} <span className="text-[#9e9e9e] ml-1">({c.quantity}x)</span></p>
-                      <p className="text-[10px] text-[#9e9e9e]">Custo: {formatCurrency(c.costPerUnit)} | Venda: {formatCurrency(c.sellingPricePerUnit)}</p>
+                      <p className="text-xs font-bold text-gray-900">{c.name} <span className="text-amber-700 font-semibold ml-1">({c.quantity}x)</span></p>
+                      <p className="text-[11px] text-gray-500">Custo: {formatCurrency(c.costPerUnit)} | Venda: {formatCurrency(c.sellingPricePerUnit)}</p>
                     </div>
-                    <button type="button" onClick={() => removeComponent(c.id)} className="text-red-500 p-1 hover:bg-red-50 rounded-lg">
-                      <Trash2 size={14} />
+                    <button type="button" onClick={() => removeComponent(c.id)} className="text-red-500 p-2 hover:bg-red-50 rounded-xl transition-colors">
+                      <Trash2 size={16} />
                     </button>
                   </div>
                 ))}
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
                 <input 
-                  placeholder="Nome do Item"
-                  className="col-span-2 px-3 py-2 bg-white border border-[#e5e5e5] rounded-xl text-xs outline-none"
+                  placeholder="Nome do Item (ex: Colar)"
+                  className="col-span-2 sm:col-span-4 px-3.5 py-2.5 bg-white border border-amber-200/80 rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500/20"
                   value={newComponent.name}
                   onChange={e => setNewComponent({ ...newComponent, name: e.target.value })}
                 />
                 <input 
                   type="number"
                   placeholder="Custo Un."
-                  className="px-3 py-2 bg-white border border-[#e5e5e5] rounded-xl text-xs outline-none"
+                  className="px-3.5 py-2.5 bg-white border border-amber-200/80 rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500/20"
                   value={newComponent.costPerUnit || ""}
                   onChange={e => setNewComponent({ ...newComponent, costPerUnit: parseFloat(e.target.value) || 0 })}
                 />
                 <input 
                   type="number"
                   placeholder="Venda Un."
-                  className="px-3 py-2 bg-white border border-[#e5e5e5] rounded-xl text-xs outline-none"
+                  className="px-3.5 py-2.5 bg-white border border-amber-200/80 rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500/20"
                   value={newComponent.sellingPricePerUnit || ""}
                   onChange={e => setNewComponent({ ...newComponent, sellingPricePerUnit: parseFloat(e.target.value) || 0 })}
                 />
                 <input 
                   type="number"
+                  min="1"
                   placeholder="Qtd"
-                  className="px-3 py-2 bg-white border border-[#e5e5e5] rounded-xl text-xs outline-none"
+                  className="px-3.5 py-2.5 bg-white border border-amber-200/80 rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500/20"
                   value={newComponent.quantity}
                   onChange={e => setNewComponent({ ...newComponent, quantity: parseInt(e.target.value) || 1 })}
                 />
                 <button 
                   type="button"
                   onClick={addComponent}
-                  className="col-span-2 py-2 bg-[#141414] text-white rounded-xl text-xs font-bold hover:bg-black"
+                  className="py-2.5 bg-[#141414] text-white rounded-xl text-xs font-bold hover:bg-black transition-colors"
                 >
-                  Adicionar Item ao Jogo
+                  + Adicionar Item
                 </button>
               </div>
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Custo por Unidade (R$)</label>
-              <input 
-                required
-                type="number" 
-                step="0.01"
-                readOnly={isJogo}
-                className={cn(
-                  "w-full px-4 py-3 bg-[#f5f5f5] border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 outline-none",
-                  isJogo && "opacity-60 cursor-not-allowed"
-                )}
-                value={formData.costPerUnit}
-                onChange={e => setFormData({ ...formData, costPerUnit: parseFloat(e.target.value) })}
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Preço de Venda por Unidade (R$)</label>
-              <input 
-                required
-                type="number" 
-                step="0.01"
-                readOnly={isJogo}
-                className={cn(
-                  "w-full px-4 py-3 bg-[#f5f5f5] border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 outline-none",
-                  isJogo && "opacity-60 cursor-not-allowed"
-                )}
-                value={formData.sellingPricePerUnit}
-                onChange={e => setFormData({ ...formData, sellingPricePerUnit: parseFloat(e.target.value) })}
-              />
-            </div>
-          </div>
-
-          <div className="pt-4 flex gap-4 shrink-0">
+          {/* ACTIONS */}
+          <div className="pt-4 flex gap-4 shrink-0 border-t border-gray-100">
             <button 
               type="button"
               onClick={onClose}
@@ -1159,7 +1744,7 @@ function ProductModal({ product, categories, onClose, onSave }: { product?: Prod
               className="flex-1 py-4 text-sm font-bold bg-[#141414] text-white rounded-2xl hover:bg-black transition-all shadow-lg shadow-black/10 flex items-center justify-center gap-2"
             >
               <Save size={18} />
-              Salvar Produto
+              Salvar Produto na Vitrine
             </button>
           </div>
         </form>
@@ -1559,7 +2144,7 @@ function Login({ users, onLogin, onBack }: { users: User[], onLogin: (u: User) =
     if (user) {
       onLogin(user);
     } else {
-      setError("E-mail ou senha incorretos");
+      setError("Usuário ou senha incorretos");
     }
   };
 
@@ -1567,7 +2152,7 @@ function Login({ users, onLogin, onBack }: { users: User[], onLogin: (u: User) =
     <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center p-4 font-sans">
       <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
         <div className="p-12">
-          <div className="flex flex-col items-center mb-10">
+          <div className="flex flex-col items-center mb-6">
             <div className="w-16 h-16 bg-[#141414] text-white rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-black/20">
               <PackageCheck size={32} />
             </div>
@@ -1577,15 +2162,42 @@ function Login({ users, onLogin, onBack }: { users: User[], onLogin: (u: User) =
             </p>
           </div>
 
+          {/* Presentation System Notice */}
+          <div className="mb-8 p-4 bg-amber-50/90 border border-amber-300/80 rounded-2xl text-amber-950 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles size={16} className="text-amber-600 animate-pulse" />
+              <p className="text-xs font-black uppercase tracking-wider text-amber-900">Sistema de Apresentação • Portfólio</p>
+            </div>
+            <p className="text-xs leading-relaxed text-amber-900 font-medium mb-3">
+              Esta é uma versão demonstrativa para apresentação de portfólio. Para acessar o painel administrativo completo, utilize as credenciais de teste:
+            </p>
+            <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-white/90 rounded-xl border border-amber-200 text-xs">
+              <div className="flex items-center gap-3">
+                <span><strong>Login:</strong> <code className="bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded">teste</code></span>
+                <span><strong>Senha:</strong> <code className="bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded">teste</code></span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("teste");
+                  setPassword("teste");
+                }}
+                className="text-[11px] font-bold text-amber-900 hover:text-black underline cursor-pointer"
+              >
+                Preencher dados
+              </button>
+            </div>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold text-[#9e9e9e] uppercase tracking-wider ml-1">E-mail</label>
+              <label className="text-xs font-bold text-[#9e9e9e] uppercase tracking-wider ml-1">Login (ou E-mail)</label>
               <div className="relative">
                 <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9e9e9e]" size={18} />
                 <input 
                   required
-                  type="email" 
-                  placeholder="exemplo@loja.com"
+                  type="text" 
+                  placeholder="Digite 'teste'"
                   className="w-full pl-12 pr-4 py-4 bg-[#f5f5f5] border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 outline-none transition-all"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
@@ -1600,7 +2212,7 @@ function Login({ users, onLogin, onBack }: { users: User[], onLogin: (u: User) =
                 <input 
                   required
                   type="password" 
-                  placeholder="••••••••"
+                  placeholder="Digite 'teste'"
                   className="w-full pl-12 pr-4 py-4 bg-[#f5f5f5] border-none rounded-2xl text-sm focus:ring-2 focus:ring-black/5 outline-none transition-all"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
@@ -1619,7 +2231,7 @@ function Login({ users, onLogin, onBack }: { users: User[], onLogin: (u: User) =
               type="submit"
               className="w-full py-4 bg-[#141414] text-white rounded-2xl font-bold hover:bg-black transition-all shadow-lg shadow-black/20 flex items-center justify-center gap-2 group"
             >
-              Entrar
+              Entrar no Painel Administrativo
               <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </form>
@@ -1629,12 +2241,23 @@ function Login({ users, onLogin, onBack }: { users: User[], onLogin: (u: User) =
             className="w-full mt-6 py-4 text-[#9e9e9e] hover:text-black font-bold text-sm flex items-center justify-center gap-2 transition-colors"
           >
             <ArrowLeft size={18} />
-            Voltar para Vitrine
+            Voltar para Vitrine Pública
           </button>
           
-          <div className="mt-10 pt-8 border-t border-[#f5f5f5] text-center">
-            <p className="text-[10px] text-[#9e9e9e] font-bold uppercase tracking-widest">Usuário de Teste</p>
-            <p className="text-xs text-[#4a4a4a] mt-1 font-medium">b@b / 123</p>
+          <div className="mt-8 pt-6 border-t border-[#f5f5f5]">
+            <div className="p-4 bg-[#fcfcfc] rounded-2xl border border-[#f0f0f0] flex flex-col items-center justify-center text-center">
+              <p className="text-[10px] text-[#9e9e9e] font-bold uppercase tracking-widest mb-1.5">Acesso de Demonstração</p>
+              <div className="flex gap-4 justify-center text-xs">
+                <div>
+                  <span className="text-[#9e9e9e] font-medium">Login: </span>
+                  <span className="font-bold text-[#141414] bg-[#f5f5f5] px-2 py-1 rounded-md">teste</span>
+                </div>
+                <div>
+                  <span className="text-[#9e9e9e] font-medium">Senha: </span>
+                  <span className="font-bold text-[#141414] bg-[#f5f5f5] px-2 py-1 rounded-md">teste</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2203,7 +2826,7 @@ function Settings({
         <div ref={discountsRef} className={cn("bg-white rounded-3xl p-8 shadow-sm border transition-all duration-500", activeSection === "discounts" ? "border-black ring-4 ring-black/5" : "border-[#e5e5e5]")}>
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 bg-[#f5f5f5] rounded-xl flex items-center justify-center text-[#141414]">
-              <Star size={20} />
+              <Percent size={20} />
             </div>
             <div>
               <h3 className="text-lg font-bold tracking-tight">Descontos de Produtos</h3>
@@ -2421,20 +3044,156 @@ function Showcase({
 }) {
   const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
   const [modalContent, setModalContent] = useState<{ title: string, content: React.ReactNode } | null>(null);
+  const [selectedProductForDetails, setSelectedProductForDetails] = useState<Product | null>(null);
+  const [detailsQuantity, setDetailsQuantity] = useState<number>(1);
+  const [cart, setCart] = useState<{ product: Product; quantity: number }[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   
   const categories = ["Todos", ...Array.from(new Set(products.map(p => p.category)))];
 
   const filteredProducts = products.filter(p => selectedCategory === "Todos" || p.category === selectedCategory);
 
-  const getDiscountedPrice = (product: Product) => {
-    if (!product.discountPercentage || !product.discountStart || !product.discountEnd) return product.sellingPricePerUnit;
-    const now = new Date();
-    const start = parseISO(product.discountStart);
-    const end = parseISO(product.discountEnd);
-    if (isWithinInterval(now, { start, end })) {
-      return product.sellingPricePerUnit * (1 - product.discountPercentage / 100);
+  const getDiscountInfo = (product: Product) => {
+    let hasDiscount = false;
+    let discountedPrice = product.sellingPricePerUnit;
+    
+    if (product.discountPercentage && product.discountPercentage > 0) {
+      if (product.discountStart && product.discountEnd) {
+        try {
+          const now = new Date();
+          const start = parseISO(product.discountStart);
+          const end = parseISO(product.discountEnd);
+          if (isWithinInterval(now, { start, end })) {
+            hasDiscount = true;
+            discountedPrice = product.sellingPricePerUnit * (1 - product.discountPercentage / 100);
+          }
+        } catch {
+          hasDiscount = true;
+          discountedPrice = product.sellingPricePerUnit * (1 - product.discountPercentage / 100);
+        }
+      } else {
+        hasDiscount = true;
+        discountedPrice = product.sellingPricePerUnit * (1 - product.discountPercentage / 100);
+      }
     }
-    return product.sellingPricePerUnit;
+    
+    const finalDiscountedPrice = parseFloat(discountedPrice.toFixed(2));
+    const savings = parseFloat((product.sellingPricePerUnit - finalDiscountedPrice).toFixed(2));
+
+    return {
+      hasDiscount,
+      discountedPrice: finalDiscountedPrice,
+      originalPrice: product.sellingPricePerUnit,
+      discountPercentage: product.discountPercentage || 0,
+      savings
+    };
+  };
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 4000);
+  };
+
+  const addToCart = (product: Product, quantityToAdd: number = 1) => {
+    if (product.stock <= 0) {
+      showToast(`A peça "${product.name}" está esgotada no momento.`);
+      return;
+    }
+
+    setCart(prev => {
+      const existingIndex = prev.findIndex(item => item.product.id === product.id);
+      if (existingIndex > -1) {
+        const updated = [...prev];
+        const currentQty = updated[existingIndex].quantity;
+        const newQty = Math.min(currentQty + quantityToAdd, product.stock);
+        updated[existingIndex] = { ...updated[existingIndex], quantity: newQty };
+        return updated;
+      } else {
+        return [...prev, { product, quantity: Math.min(quantityToAdd, product.stock) }];
+      }
+    });
+
+    showToast(`"${product.name}" (${quantityToAdd}x) adicionado ao carrinho!`);
+  };
+
+  const updateCartQuantity = (productId: string, delta: number) => {
+    setCart(prev => {
+      return prev
+        .map(item => {
+          if (item.product.id === productId) {
+            const newQty = item.quantity + delta;
+            if (newQty <= 0) return null;
+            return { ...item, quantity: Math.min(newQty, item.product.stock) };
+          }
+          return item;
+        })
+        .filter(Boolean) as { product: Product; quantity: number }[];
+    });
+  };
+
+  const removeFromCart = (productId: string) => {
+    setCart(prev => prev.filter(item => item.product.id !== productId));
+  };
+
+  const cartTotal = cart.reduce((acc, item) => {
+    const info = getDiscountInfo(item.product);
+    return acc + (info.discountedPrice * item.quantity);
+  }, 0);
+
+  const cartTotalSavings = cart.reduce((acc, item) => {
+    const info = getDiscountInfo(item.product);
+    return acc + (info.hasDiscount ? info.savings * item.quantity : 0);
+  }, 0);
+
+  const cartItemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+
+  const handleBuySingleWhatsApp = (product: Product, quantity: number) => {
+    const info = getDiscountInfo(product);
+    const priceText = formatCurrency(info.discountedPrice);
+    const discountNote = info.hasDiscount 
+      ? ` (Valor original: ${formatCurrency(info.originalPrice)} com ${info.discountPercentage}% OFF - Economia de ${formatCurrency(info.savings)})` 
+      : "";
+    
+    const message = 
+      `Olá! Tenho interesse em adquirir esta joia através da vitrine:\n\n` +
+      `✨ *Peça:* ${product.name}\n` +
+      `💎 *Material:* Prata 925 Legítima\n` +
+      `📁 *Categoria:* ${product.category}\n` +
+      `📦 *Quantidade:* ${quantity} unidade(s)\n` +
+      `💰 *Valor Unitário:* ${priceText}${discountNote}\n` +
+      `🏷️ *Subtotal:* ${formatCurrency(info.discountedPrice * quantity)}\n\n` +
+      `Ainda está disponível? Como posso combinar o pagamento e entrega?`;
+    
+    const rawNumber = contacts.whatsapp ? contacts.whatsapp.replace(/\D/g, '') : "5511999999999";
+    const cleanNumber = rawNumber.length >= 10 ? rawNumber : "5511999999999";
+    window.open(`https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`, "_blank");
+  };
+
+  const handleCheckoutCartWhatsApp = () => {
+    if (cart.length === 0) return;
+    
+    let message = `Olá! Gostaria de finalizar meu pedido da vitrine *PrataGestão*:\n\n*🛍️ Itens do Pedido:*\n`;
+    
+    cart.forEach((item, index) => {
+      const info = getDiscountInfo(item.product);
+      const subtotal = info.discountedPrice * item.quantity;
+      const discountNote = info.hasDiscount ? ` (${info.discountPercentage}% OFF)` : "";
+      message += `${index + 1}. *${item.product.name}* (Prata 925)\n   • Qtd: ${item.quantity}x | Unitário: ${formatCurrency(info.discountedPrice)}${discountNote} | Subtotal: ${formatCurrency(subtotal)}\n`;
+    });
+    
+    message += `\n━━━━━━━━━━━━━━━━━━━━\n`;
+    if (cartTotalSavings > 0) {
+      message += `🎉 *Você economizou:* ${formatCurrency(cartTotalSavings)}\n`;
+    }
+    message += `💵 *Total a Pagar:* ${formatCurrency(cartTotal)}\n\n`;
+    message += `Por favor, me informe as opções para pagamento (Pix / Cartão) e prazo para envio!`;
+    
+    const rawNumber = contacts.whatsapp ? contacts.whatsapp.replace(/\D/g, '') : "5511999999999";
+    const cleanNumber = rawNumber.length >= 10 ? rawNumber : "5511999999999";
+    window.open(`https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   const openModal = (type: 'about' | 'care' | 'contacts') => {
@@ -2530,6 +3289,41 @@ function Showcase({
 
   return (
     <div className="min-h-screen bg-white text-[#141414] font-sans selection:bg-black selection:text-white">
+      {/* Toast notification */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-[200] animate-in slide-in-from-bottom-5 fade-in duration-300">
+          <div className="bg-[#141414] text-white px-5 py-4 rounded-2xl shadow-2xl flex items-center gap-4 border border-white/10 max-w-md">
+            <CheckCircle2 size={20} className="text-emerald-400 shrink-0" />
+            <span className="text-sm font-medium">{toastMessage}</span>
+            <button 
+              onClick={() => { setIsCartOpen(true); setToastMessage(null); }}
+              className="text-xs font-bold uppercase tracking-wider text-amber-300 hover:text-amber-200 underline whitespace-nowrap"
+            >
+              Ver Carrinho
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Cart Button (when items exist in cart) */}
+      {cartItemsCount > 0 && (
+        <button
+          onClick={() => setIsCartOpen(true)}
+          className="fixed bottom-6 left-6 z-[90] bg-[#141414] text-white p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all flex items-center gap-3 border border-white/20 group"
+          title="Abrir carrinho de compras"
+        >
+          <div className="relative">
+            <ShoppingBag size={22} className="group-hover:rotate-6 transition-transform" />
+            <span className="absolute -top-2 -right-2 bg-emerald-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow">
+              {cartItemsCount}
+            </span>
+          </div>
+          <span className="text-xs font-bold tracking-tight pr-1 hidden sm:inline">
+            Carrinho ({formatCurrency(cartTotal)})
+          </span>
+        </button>
+      )}
+
       {/* Hero Section */}
       <header className="relative h-screen flex items-center justify-center overflow-hidden bg-[#0a0a0a]">
         <div className="absolute inset-0 opacity-40">
@@ -2542,18 +3336,37 @@ function Showcase({
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60" />
         
-        <nav className="absolute top-0 left-0 w-full p-8 flex items-center justify-between z-10">
+        <nav className="absolute top-0 left-0 w-full p-6 md:p-8 flex items-center justify-between z-10">
           <div className="flex items-center gap-2 text-white">
             <PackageCheck size={32} />
             <span className="text-2xl font-bold tracking-tighter uppercase">PrataGestão</span>
           </div>
-          <button 
-            onClick={onAdminAccess}
-            className="px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full font-bold text-sm hover:bg-white hover:text-black transition-all flex items-center gap-2"
-          >
-            <Lock size={16} />
-            Acesso Administrativo
-          </button>
+          
+          <div className="flex items-center gap-3">
+            {/* Cart Header Button */}
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="px-5 py-3 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full font-bold text-sm hover:bg-white hover:text-black transition-all flex items-center gap-2"
+            >
+              <ShoppingBag size={18} />
+              <span className="hidden sm:inline">Carrinho</span>
+              {cartItemsCount > 0 && (
+                <span className="bg-emerald-500 text-white text-xs px-2 py-0.5 rounded-full font-extrabold">
+                  {cartItemsCount}
+                </span>
+              )}
+            </button>
+
+            {/* Admin Access Button */}
+            <button 
+              onClick={onAdminAccess}
+              className="px-5 py-3 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full font-bold text-sm hover:bg-white hover:text-black transition-all flex items-center gap-2"
+            >
+              <Lock size={16} />
+              <span className="hidden sm:inline">Acesso Administrativo</span>
+              <span className="sm:hidden">Admin</span>
+            </button>
+          </div>
         </nav>
 
         <div className="relative z-10 text-center px-4 max-w-4xl">
@@ -2581,6 +3394,10 @@ function Showcase({
       <section id="colecao" className="py-32 px-4 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
           <div>
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles size={18} className="text-amber-500" />
+              <span className="text-xs font-bold uppercase tracking-widest text-[#9e9e9e]">Joias Selecionadas</span>
+            </div>
             <h2 className="text-5xl font-bold tracking-tighter mb-4">Nossa Coleção</h2>
             <p className="text-[#9e9e9e] text-lg max-w-xl">Peças selecionadas para todos os momentos. Da delicadeza do dia a dia ao brilho das grandes ocasiões.</p>
           </div>
@@ -2611,17 +3428,27 @@ function Showcase({
             </div>
           ) : (
             filteredProducts.map(product => {
-              const discountedPrice = getDiscountedPrice(product);
-              const hasDiscount = discountedPrice < product.sellingPricePerUnit;
+              const info = getDiscountInfo(product);
+              const isOutOfStock = product.stock <= 0;
               
               return (
-                <div key={product.id} className="group relative">
-                  <div className="aspect-[4/5] bg-[#f5f5f5] rounded-3xl overflow-hidden mb-6 relative">
+                <div 
+                  key={product.id} 
+                  className="group relative flex flex-col bg-white rounded-3xl p-3 hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100"
+                >
+                  {/* Card Image Box */}
+                  <div 
+                    onClick={() => {
+                      setSelectedProductForDetails(product);
+                      setDetailsQuantity(1);
+                    }}
+                    className="aspect-[4/5] bg-[#f5f5f5] rounded-2xl overflow-hidden mb-4 relative cursor-pointer"
+                  >
                     {product.imageUrl ? (
                       <img 
                         src={product.imageUrl} 
                         alt={product.name} 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                         referrerPolicy="no-referrer"
                       />
                     ) : (
@@ -2630,38 +3457,138 @@ function Showcase({
                       </div>
                     )}
                     
-                    {hasDiscount && (
-                      <div className="absolute top-4 left-4 bg-red-500 text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
-                        -{product.discountPercentage}% OFF
+                    {/* Discount Badge */}
+                    {info.hasDiscount && (
+                      <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider shadow-md">
+                        -{info.discountPercentage}% OFF
                       </div>
                     )}
+
+                    {/* Stock Status Badge */}
+                    {isOutOfStock ? (
+                      <div className="absolute top-3 right-3 bg-black/80 text-white text-[10px] font-bold px-3 py-1 rounded-full backdrop-blur-sm">
+                        Esgotado
+                      </div>
+                    ) : product.stock <= 5 ? (
+                      <div className="absolute top-3 right-3 bg-amber-500 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-sm">
+                        Últimas {product.stock} un.
+                      </div>
+                    ) : null}
                     
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-                      <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:scale-110 transition-transform">
+                    {/* Hover Action Buttons */}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
+                      {/* EYE BUTTON (View details) */}
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedProductForDetails(product);
+                          setDetailsQuantity(1);
+                        }}
+                        title="Ver detalhamento completo da joia"
+                        className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:scale-110 active:scale-95 shadow-xl transition-all"
+                      >
                         <Eye size={20} />
                       </button>
-                      <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:scale-110 transition-transform">
+
+                      {/* CART BUTTON (Add to cart) */}
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(product, 1);
+                        }}
+                        disabled={isOutOfStock}
+                        title={isOutOfStock ? "Produto esgotado" : "Adicionar ao carrinho"}
+                        className={cn(
+                          "w-12 h-12 rounded-full flex items-center justify-center shadow-xl transition-all",
+                          isOutOfStock 
+                            ? "bg-gray-200 text-gray-400 cursor-not-allowed" 
+                            : "bg-white text-black hover:scale-110 active:scale-95"
+                        )}
+                      >
                         <ShoppingBag size={20} />
                       </button>
                     </div>
                   </div>
                   
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] font-bold text-[#9e9e9e] uppercase tracking-widest">{product.category}</span>
-                      <div className="flex items-center gap-1 text-yellow-500">
-                        <Star size={10} fill="currentColor" />
-                        <span className="text-[10px] font-bold">4.9</span>
-                      </div>
-                    </div>
-                    <h3 className="font-bold text-lg mb-2 group-hover:text-[#9e9e9e] transition-colors">{product.name}</h3>
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl font-bold">{formatCurrency(discountedPrice)}</span>
-                      {hasDiscount && (
-                        <span className="text-sm text-[#9e9e9e] line-through font-medium">
-                          {formatCurrency(product.sellingPricePerUnit)}
+                  {/* Card Content */}
+                  <div className="px-2 pb-2 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[10px] font-bold text-[#9e9e9e] uppercase tracking-widest">{product.category}</span>
+                        <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                          {product.material ? "Prata 925" : "Legítima"}
                         </span>
-                      )}
+                      </div>
+                      
+                      <h3 
+                        onClick={() => {
+                          setSelectedProductForDetails(product);
+                          setDetailsQuantity(1);
+                        }}
+                        className="font-bold text-base mb-2 cursor-pointer hover:text-gray-600 transition-colors line-clamp-2"
+                      >
+                        {product.name}
+                      </h3>
+                    </div>
+
+                    <div>
+                      {/* Stock Indicator */}
+                      <div className="flex items-center gap-1.5 mb-2 text-xs">
+                        <span className={cn(
+                          "w-2 h-2 rounded-full",
+                          isOutOfStock ? "bg-red-500" : product.stock <= 5 ? "bg-amber-500" : "bg-emerald-500"
+                        )} />
+                        <span className="text-[11px] font-medium text-gray-500">
+                          {isOutOfStock ? "Sem estoque" : `Estoque: ${product.stock} un.`}
+                        </span>
+                      </div>
+
+                      {/* Pricing Display */}
+                      <div className="flex flex-col">
+                        {info.hasDiscount ? (
+                          <>
+                            <span className="text-xs text-[#9e9e9e] line-through font-medium">
+                              De {formatCurrency(info.originalPrice)}
+                            </span>
+                            <div className="flex items-baseline gap-2">
+                              <span className="text-xl font-extrabold text-[#141414]">
+                                Por {formatCurrency(info.discountedPrice)}
+                              </span>
+                            </div>
+                          </>
+                        ) : (
+                          <span className="text-xl font-extrabold text-[#141414]">
+                            {formatCurrency(info.discountedPrice)}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Quick Action Buttons on Card */}
+                      <div className="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-gray-100">
+                        <button
+                          onClick={() => {
+                            setSelectedProductForDetails(product);
+                            setDetailsQuantity(1);
+                          }}
+                          className="py-2.5 px-3 bg-[#f5f5f5] hover:bg-[#eaeaea] text-[#141414] rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
+                        >
+                          <Eye size={14} />
+                          Ver Peça
+                        </button>
+                        <button
+                          onClick={() => addToCart(product, 1)}
+                          disabled={isOutOfStock}
+                          className={cn(
+                            "py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all",
+                            isOutOfStock
+                              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                              : "bg-[#141414] hover:bg-black text-white shadow-sm"
+                          )}
+                        >
+                          <ShoppingBag size={14} />
+                          Comprar
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2670,6 +3597,498 @@ function Showcase({
           )}
         </div>
       </section>
+
+      {/* MODAL: DETALHAMENTO COMPLETO DA PEÇA */}
+      {selectedProductForDetails && (() => {
+        const product = selectedProductForDetails;
+        const info = getDiscountInfo(product);
+        const isOutOfStock = product.stock <= 0;
+
+        return (
+          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-md animate-in fade-in duration-300">
+            <div className="bg-white w-full max-w-4xl rounded-[32px] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300 max-h-[92vh] flex flex-col">
+              {/* Modal Top Bar */}
+              <div className="px-6 py-4 border-b border-[#f0f0f0] flex items-center justify-between bg-[#fcfcfc]">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 px-3 py-1 rounded-full">
+                    {product.category}
+                  </span>
+                  <div className="flex items-center gap-1 text-xs font-bold text-gray-500 bg-white border border-gray-200 px-3 py-1 rounded-full">
+                    <ShieldCheck size={14} className="text-emerald-600" />
+                    <span>Prata 925 Legítima</span>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setSelectedProductForDetails(null)}
+                  className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-500 hover:text-black hover:bg-gray-100 transition-all shadow-sm"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Modal Scrollable Content */}
+              <div className="p-6 sm:p-8 overflow-y-auto custom-scrollbar flex-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                  {/* Left Column: Image & Badges */}
+                  <div>
+                    <div className="aspect-[4/5] bg-[#f5f5f5] rounded-3xl overflow-hidden relative shadow-inner border border-gray-100">
+                      {product.imageUrl ? (
+                        <img 
+                          src={product.imageUrl} 
+                          alt={product.name} 
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-300">
+                          <PackageCheck size={96} />
+                        </div>
+                      )}
+
+                      {/* Discount ribbon */}
+                      {info.hasDiscount && (
+                        <div className="absolute top-4 left-4 bg-red-500 text-white px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest shadow-lg">
+                          -{info.discountPercentage}% OFF
+                        </div>
+                      )}
+
+                      {/* Guarantee Seal */}
+                      <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md text-white p-3 rounded-2xl flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                          <Sparkles size={18} className="text-amber-300" />
+                        </div>
+                        <div className="text-[11px] leading-tight">
+                          <p className="font-bold text-white uppercase tracking-wider">{product.warranty || "Garantia Eterna do Metal"}</p>
+                          <p className="text-gray-300">{product.material || "Prata de Lei 925 legítima certificada"}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Complete Details & Purchasing */}
+                  <div className="flex flex-col justify-between">
+                    <div>
+                      {/* Category & Material Seal (Customer ratings removed as requested) */}
+                      <div className="flex items-center gap-2.5 mb-2.5">
+                        <span className="text-xs font-bold text-[#9e9e9e] uppercase tracking-widest">{product.category}</span>
+                        <span className="text-gray-300">•</span>
+                        <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200/60 flex items-center gap-1">
+                          <ShieldCheck size={13} className="text-emerald-600" />
+                          {product.material || "Prata de Lei 925 Legítima"}
+                        </span>
+                      </div>
+
+                      {/* Product Name */}
+                      <h2 className="text-2xl sm:text-3xl font-extrabold text-[#141414] tracking-tight mb-4">
+                        {product.name}
+                      </h2>
+
+                      {/* Product Description */}
+                      {product.description && (
+                        <div className="mb-6 p-4 rounded-2xl bg-[#fafafa] border border-gray-100/90">
+                          <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5 flex items-center gap-1.5">
+                            <Sparkles size={13} className="text-amber-500" />
+                            Sobre esta Peça
+                          </p>
+                          <p className="text-sm text-gray-700 leading-relaxed font-normal">
+                            {product.description}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Stock Quantity Details */}
+                      <div className="mb-6 p-4 rounded-2xl bg-[#fafafa] border border-gray-100 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className={cn(
+                            "w-3.5 h-3.5 rounded-full ring-4",
+                            isOutOfStock 
+                              ? "bg-red-500 ring-red-100" 
+                              : product.stock <= 5 
+                                ? "bg-amber-500 ring-amber-100" 
+                                : "bg-emerald-500 ring-emerald-100 animate-pulse"
+                          )} />
+                          <div>
+                            <p className="text-xs font-bold uppercase tracking-wider text-gray-500">Disponibilidade</p>
+                            <p className="text-sm font-extrabold text-gray-900">
+                              {isOutOfStock ? (
+                                "Produto Esgotado"
+                              ) : (
+                                <>
+                                  Em Estoque: <span className="text-emerald-700">{product.stock} unidades disponíveis</span>
+                                </>
+                              )}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Postagem</span>
+                          <p className="text-xs font-bold text-gray-700">Imediata</p>
+                        </div>
+                      </div>
+
+                      {/* Price Section */}
+                      <div className="p-5 rounded-2xl bg-gradient-to-br from-[#f8f9fa] to-[#f0f2f5] border border-gray-200/70 mb-6">
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Preço Exclusivo de Vitrine</p>
+                        
+                        {info.hasDiscount ? (
+                          <div>
+                            <div className="flex items-center gap-3 mb-1">
+                              <span className="text-sm text-gray-400 line-through font-medium">
+                                De {formatCurrency(info.originalPrice)}
+                              </span>
+                              <span className="bg-red-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-md">
+                                Economize {formatCurrency(info.savings)}
+                              </span>
+                            </div>
+                            <div className="flex items-baseline gap-2">
+                              <span className="text-xs font-bold text-gray-600">Por:</span>
+                              <span className="text-4xl font-black text-[#141414] tracking-tight">
+                                {formatCurrency(info.discountedPrice)}
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-4xl font-black text-[#141414] tracking-tight">
+                            {formatCurrency(info.discountedPrice)}
+                          </div>
+                        )}
+
+                        <div className="mt-3 pt-3 border-t border-gray-200/60 flex flex-col sm:flex-row gap-2 sm:gap-4 text-xs font-medium text-gray-600">
+                          <div className="flex items-center gap-1.5">
+                            <CreditCard size={14} className="text-gray-400" />
+                            <span>Até 3x de {formatCurrency(info.discountedPrice / 3)} sem juros</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-emerald-700 font-bold">
+                            <Banknote size={14} />
+                            <span>5% off à vista via Pix ({formatCurrency(info.discountedPrice * 0.95)})</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Components listing if it's a set (Jogo) */}
+                      {product.isSet && product.components && product.components.length > 0 && (
+                        <div className="mb-6 p-4 rounded-2xl bg-amber-50/70 border border-amber-200/60">
+                          <p className="text-xs font-bold uppercase tracking-wider text-amber-900 mb-2 flex items-center gap-1.5">
+                            <Sparkles size={14} className="text-amber-600" />
+                            Itens inclusos neste Conjunto:
+                          </p>
+                          <div className="space-y-1.5">
+                            {product.components.map(comp => (
+                              <div key={comp.id} className="flex items-center justify-between text-xs bg-white/80 p-2.5 rounded-xl border border-amber-100">
+                                <span className="font-bold text-gray-800">{comp.quantity}x {comp.name}</span>
+                                <span className="text-amber-800 font-semibold">{formatCurrency(comp.sellingPricePerUnit)} cada</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Specifications and Material Specs - All filled dynamically from registration */}
+                      <div className="mb-6">
+                        <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-1.5">
+                          <ShieldCheck size={14} className="text-gray-500" />
+                          Especificações Técnicas da Joia
+                        </p>
+                        <div className="grid grid-cols-2 gap-2.5 text-xs">
+                          <div className="p-3 bg-[#fbfbfb] rounded-2xl border border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                              <ShieldCheck size={11} className="text-gray-400" /> Metal / Material
+                            </p>
+                            <p className="font-bold text-gray-800 mt-0.5 break-words">{product.material || "Prata de Lei 925 Legítima"}</p>
+                          </div>
+                          
+                          <div className="p-3 bg-[#fbfbfb] rounded-2xl border border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                              <Sparkles size={11} className="text-gray-400" /> Acabamento
+                            </p>
+                            <p className="font-bold text-gray-800 mt-0.5 break-words">{product.finish || "Polimento Espelhado"}</p>
+                          </div>
+
+                          <div className="p-3 bg-[#fbfbfb] rounded-2xl border border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                              <Ruler size={11} className="text-gray-400" /> Dimensões / Tamanho
+                            </p>
+                            <p className="font-bold text-gray-800 mt-0.5 break-words">{product.dimensions || "Tamanho padrão"}</p>
+                          </div>
+
+                          <div className="p-3 bg-[#fbfbfb] rounded-2xl border border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                              <Scale size={11} className="text-gray-400" /> Peso Aproximado
+                            </p>
+                            <p className="font-bold text-gray-800 mt-0.5 break-words">{product.weight || "Conforme modelo"}</p>
+                          </div>
+
+                          <div className="p-3 bg-[#fbfbfb] rounded-2xl border border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                              <Gem size={11} className="text-gray-400" /> Pedras / Detalhes
+                            </p>
+                            <p className="font-bold text-gray-800 mt-0.5 break-words">{product.stone || "Sem pedras / Lisa"}</p>
+                          </div>
+
+                          <div className="p-3 bg-[#fbfbfb] rounded-2xl border border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                              <CheckCircle2 size={11} className="text-gray-400" /> Hipoalergênico
+                            </p>
+                            <p className="font-bold text-gray-800 mt-0.5 break-words">{product.hypoallergenic || "100% Livre de Níquel"}</p>
+                          </div>
+
+                          <div className="p-3 bg-[#fbfbfb] rounded-2xl border border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                              <Gift size={11} className="text-gray-400" /> Embalagem
+                            </p>
+                            <p className="font-bold text-gray-800 mt-0.5 break-words">{product.packaging || "Saquinho de Veludo + Certificado"}</p>
+                          </div>
+
+                          <div className="p-3 bg-[#fbfbfb] rounded-2xl border border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
+                              <ShieldCheck size={11} className="text-gray-400" /> Garantia
+                            </p>
+                            <p className="font-bold text-gray-800 mt-0.5 break-words">{product.warranty || "Garantia Vitalícia da Prata 925"}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Quantity Selector & Action Buttons */}
+                    <div className="space-y-4 pt-4 border-t border-gray-100">
+                      {/* Quantity Selector */}
+                      {!isOutOfStock && (
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                            Quantidade Desejada:
+                          </span>
+                          <div className="flex items-center gap-3 bg-[#f5f5f5] p-1.5 rounded-2xl border border-gray-200">
+                            <button
+                              onClick={() => setDetailsQuantity(q => Math.max(1, q - 1))}
+                              disabled={detailsQuantity <= 1}
+                              className="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-black font-bold disabled:opacity-30 disabled:cursor-not-allowed shadow-sm hover:bg-gray-100 transition-colors"
+                            >
+                              <Minus size={14} />
+                            </button>
+                            <span className="font-extrabold text-sm w-8 text-center">{detailsQuantity}</span>
+                            <button
+                              onClick={() => setDetailsQuantity(q => Math.min(product.stock, q + 1))}
+                              disabled={detailsQuantity >= product.stock}
+                              className="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-black font-bold disabled:opacity-30 disabled:cursor-not-allowed shadow-sm hover:bg-gray-100 transition-colors"
+                            >
+                              <Plus size={14} />
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Primary Actions */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {/* Add to Cart Button */}
+                        <button
+                          onClick={() => {
+                            addToCart(product, detailsQuantity);
+                            setSelectedProductForDetails(null);
+                          }}
+                          disabled={isOutOfStock}
+                          className={cn(
+                            "py-4 px-6 rounded-2xl font-bold text-sm flex items-center justify-center gap-2.5 transition-all shadow-lg",
+                            isOutOfStock
+                              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                              : "bg-[#141414] hover:bg-black text-white hover:scale-[1.02] active:scale-[0.98] shadow-black/10"
+                          )}
+                        >
+                          <ShoppingBag size={18} />
+                          Colocar no Carrinho
+                        </button>
+
+                        {/* Buy via WhatsApp Button */}
+                        <button
+                          onClick={() => handleBuySingleWhatsApp(product, detailsQuantity)}
+                          disabled={isOutOfStock}
+                          className={cn(
+                            "py-4 px-6 rounded-2xl font-bold text-sm flex items-center justify-center gap-2.5 transition-all shadow-lg",
+                            isOutOfStock
+                              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                              : "bg-[#25D366] hover:bg-[#20bd5a] text-white hover:scale-[1.02] active:scale-[0.98] shadow-[#25D366]/20"
+                          )}
+                        >
+                          <MessageCircle size={18} />
+                          Comprar via WhatsApp
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* MODAL / DRAWER: CARRINHO DE COMPRAS */}
+      {isCartOpen && (
+        <div className="fixed inset-0 z-[130] flex items-center justify-end bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-white w-full max-w-lg h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+            {/* Cart Header */}
+            <div className="p-6 border-b border-[#f0f0f0] flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-[#141414] text-white rounded-xl flex items-center justify-center shadow-md">
+                  <ShoppingBag size={20} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold tracking-tight">Carrinho de Compras</h3>
+                  <p className="text-xs text-[#9e9e9e] font-medium">
+                    {cartItemsCount} {cartItemsCount === 1 ? 'peça selecionada' : 'peças selecionadas'}
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setIsCartOpen(false)}
+                className="w-10 h-10 bg-[#f5f5f5] rounded-full flex items-center justify-center text-gray-500 hover:text-black hover:bg-[#e5e5e5] transition-all"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Cart Items List */}
+            <div className="p-6 flex-1 overflow-y-auto custom-scrollbar space-y-4">
+              {cart.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center text-center p-8">
+                  <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 mb-4">
+                    <ShoppingBag size={36} />
+                  </div>
+                  <h4 className="text-lg font-bold text-gray-800 mb-1">Seu carrinho está vazio</h4>
+                  <p className="text-xs text-gray-400 max-w-xs mb-6">
+                    Aproveite nossa coleção em Prata 925 legítima e adicione suas peças favoritas!
+                  </p>
+                  <button
+                    onClick={() => setIsCartOpen(false)}
+                    className="px-6 py-3 bg-[#141414] text-white rounded-full font-bold text-xs hover:scale-105 transition-transform"
+                  >
+                    Explorar Coleção
+                  </button>
+                </div>
+              ) : (
+                cart.map(item => {
+                  const info = getDiscountInfo(item.product);
+                  const subtotal = info.discountedPrice * item.quantity;
+                  
+                  return (
+                    <div key={item.product.id} className="flex gap-4 p-4 bg-[#fafafa] rounded-2xl border border-gray-100 group">
+                      {/* Product Thumbnail */}
+                      <div className="w-20 h-20 bg-white rounded-xl overflow-hidden shrink-0 border border-gray-200 relative">
+                        {item.product.imageUrl ? (
+                          <img 
+                            src={item.product.imageUrl} 
+                            alt={item.product.name} 
+                            className="w-full h-full object-cover"
+                            referrerPolicy="no-referrer"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-300">
+                            <PackageCheck size={24} />
+                          </div>
+                        )}
+                        {info.hasDiscount && (
+                          <span className="absolute top-1 left-1 bg-red-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded">
+                            -{info.discountPercentage}%
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Product Info & Controls */}
+                      <div className="flex-1 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="text-sm font-bold text-gray-900 leading-tight">
+                              {item.product.name}
+                            </h4>
+                            <button
+                              onClick={() => removeFromCart(item.product.id)}
+                              className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                              title="Remover peça"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                            {item.product.category} • Prata 925
+                          </span>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-2">
+                          <div className="flex items-center gap-2 bg-white px-2 py-1 rounded-xl border border-gray-200">
+                            <button
+                              onClick={() => updateCartQuantity(item.product.id, -1)}
+                              className="text-gray-500 hover:text-black"
+                            >
+                              <Minus size={12} />
+                            </button>
+                            <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
+                            <button
+                              onClick={() => updateCartQuantity(item.product.id, 1)}
+                              disabled={item.quantity >= item.product.stock}
+                              className="text-gray-500 hover:text-black disabled:opacity-30"
+                            >
+                              <Plus size={12} />
+                            </button>
+                          </div>
+
+                          <div className="text-right">
+                            {info.hasDiscount && (
+                              <span className="text-[10px] text-gray-400 line-through block leading-none">
+                                {formatCurrency(info.originalPrice * item.quantity)}
+                              </span>
+                            )}
+                            <span className="text-sm font-extrabold text-[#141414]">
+                              {formatCurrency(subtotal)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            {/* Cart Footer */}
+            {cart.length > 0 && (
+              <div className="p-6 border-t border-gray-100 bg-[#fcfcfc] space-y-4">
+                <div className="space-y-1.5 text-xs text-gray-600">
+                  {cartTotalSavings > 0 && (
+                    <div className="flex justify-between font-bold text-red-600">
+                      <span>Descontos Promocionais:</span>
+                      <span>-{formatCurrency(cartTotalSavings)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Envio / Frete:</span>
+                    <span className="font-bold text-emerald-600">A combinar via WhatsApp</span>
+                  </div>
+                  <div className="flex justify-between items-baseline pt-2 border-t border-gray-200">
+                    <span className="text-base font-bold text-gray-900">Total do Pedido:</span>
+                    <span className="text-2xl font-black text-gray-900">{formatCurrency(cartTotal)}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2 pt-2">
+                  <button
+                    onClick={handleCheckoutCartWhatsApp}
+                    className="w-full py-4 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-2xl font-bold text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-[#25D366]/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    <MessageCircle size={20} />
+                    Finalizar Pedido via WhatsApp
+                  </button>
+
+                  <button
+                    onClick={() => setIsCartOpen(false)}
+                    className="w-full py-3 bg-[#f5f5f5] hover:bg-gray-200 text-gray-700 rounded-2xl font-bold text-xs transition-colors"
+                  >
+                    Continuar Escolhendo Peças
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="bg-[#0a0a0a] text-white py-20 px-4">
