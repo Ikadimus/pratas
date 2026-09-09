@@ -49,7 +49,11 @@ import {
   Gem,
   Scale,
   Ruler,
-  Gift
+  Gift,
+  UserCheck,
+  Users,
+  Award,
+  Receipt
 } from "lucide-react";
 import { 
   BarChart, 
@@ -68,13 +72,23 @@ import {
 import { format, startOfMonth, endOfMonth, subMonths, isWithinInterval, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn, formatCurrency } from "./lib/utils";
-import { Product, Sale, Expense, AppState, User, Role, Contacts } from "./types";
+import { Product, Sale, Expense, AppState, User, Role, Contacts, Seller } from "./types";
 
 import { AdminAssistant } from "./components/AdminAssistant";
+import { B2BLogo } from "./components/B2BLogo";
+import { SellerCommissions } from "./components/SellerCommissions";
 
 const INITIAL_PRODUCT_CATEGORIES = ["Anel", "Brinco", "Colar", "Pulseira", "Pingente", "Outros", "Jogo"];
-const INITIAL_EXPENSE_CATEGORIES = ["Fornecedor", "Aluguel", "Marketing", "Outros"];
+const INITIAL_EXPENSE_CATEGORIES = ["Fornecedor", "Aluguel", "Marketing", "Comissões", "Outros"];
 const PAYMENT_METHODS = ["Crédito", "Débito", "Pix", "Dinheiro"];
+
+const DEFAULT_SELLERS: Seller[] = [
+  { id: "seller-1", name: "Ana Paula Silva", commissionRate: 5, active: true, phone: "(11) 98765-4321" },
+  { id: "seller-2", name: "Carlos Eduardo Costa", commissionRate: 5, active: true, phone: "(11) 97654-3210" },
+  { id: "seller-3", name: "Mariana Alcantara", commissionRate: 6, active: true, phone: "(11) 96543-2109" },
+  { id: "seller-4", name: "Lucas Ferreira", commissionRate: 4, active: true, phone: "(11) 95432-1098" }
+];
+
 const MENU_ITEMS = [
   { 
     id: "dashboard", 
@@ -106,6 +120,7 @@ const MENU_ITEMS = [
     icon: <TrendingDown size={18} />,
     subItems: [
       { id: "history", label: "Histórico de Despesas" },
+      { id: "commissions", label: "Comissões de Vendedores" },
       { id: "new", label: "Nova Despesa" }
     ]
   },
@@ -154,13 +169,13 @@ export default function App() {
       { id: "1", email: "b@b", password: "123", roleId: "admin" }
     ];
 
-    const defaultAboutUs = "Bem-vindo à PrataGestão Joias! Somos especialistas em Prata 925 legítima, trazendo sofisticação, delicadeza e elegância em cada detalhe. Nossa missão é oferecer joias atemporais de altíssima qualidade com design moderno, garantindo durabilidade e um brilho eterno para todas as ocasiões de sua vida.";
+    const defaultAboutUs = "Bem-vindo à B2B Pratas! Negócio que prospera. Somos especialistas em Prata 925 legítima no atacado e varejo, trazendo sofisticação, alta lucratividade e excelência em joias finas. Nossa missão é oferecer joias atemporais de altíssima qualidade com design moderno, acabamento espelhado e garantia de pureza, impulsionando o sucesso e o brilho do seu negócio.";
     const defaultSilverCare = "Como cuidar de suas Joias de Prata 925:\n\n1. Evite o contato com produtos químicos, perfumes, cosméticos e produtos de limpeza.\n2. Retire suas peças antes de tomar banho, entrar na piscina ou no mar.\n3. Limpe suas joias periodicamente com uma flanela mágica macia ou use produtos específicos para limpeza de prata (como o Limpa Pratas Monzi).\n4. Guarde suas joias individualmente em saquinhos de veludo ou caixas fechadas, protegidas da luz e da umidade, para evitar a oxidação natural.";
     const defaultContacts = {
       whatsapp: "https://wa.me/5511999999999",
-      instagram: "https://instagram.com/pratagestao",
-      facebook: "https://facebook.com/pratagestao",
-      email: "contato@pratagestao.com.br",
+      instagram: "https://instagram.com/b2bpratas",
+      facebook: "https://facebook.com/b2bpratas",
+      email: "contato@b2bpratas.com.br",
       phone: "(11) 99999-9999"
     };
 
@@ -199,7 +214,7 @@ export default function App() {
         weight: "3.2g",
         stone: "Sem pedras (Design em malha contínua)",
         hypoallergenic: "Sim (Antialérgica / Hipoalergênica)",
-        packaging: "Saquinho de Veludo PrataGestão + Certificado",
+        packaging: "Saquinho de Veludo B2B Pratas + Certificado",
         warranty: "Garantia Vitalícia da Autenticidade da Prata 925"
       },
       {
@@ -235,7 +250,7 @@ export default function App() {
         weight: "14.8g",
         stone: "Sem pedras (Prata maciça com facetas diamantadas)",
         hypoallergenic: "Sim (100% Livre de Metais Pesados)",
-        packaging: "Estojo Luxo PrataGestão + Certificado de Autenticidade",
+        packaging: "Estojo Luxo B2B Pratas + Certificado de Autenticidade",
         warranty: "Garantia Vitalícia da Autenticidade da Prata 925"
       },
       {
@@ -361,6 +376,25 @@ export default function App() {
           category: "Outros"
         });
 
+        if (m > 0) {
+          expenses.push({
+            id: `exp-comm-ana-${year}-${month}`,
+            date: new Date(year, month, 28, 17, 0, 0).toISOString(),
+            description: "Comissão de Vendas - Ana Paula Silva",
+            amount: Math.round(380.00 + Math.random() * 120),
+            category: "Comissões"
+          });
+          expenses.push({
+            id: `exp-comm-carlos-${year}-${month}`,
+            date: new Date(year, month, 28, 17, 30, 0).toISOString(),
+            description: "Comissão de Vendas - Carlos Eduardo Costa",
+            amount: Math.round(320.00 + Math.random() * 100),
+            category: "Comissões"
+          });
+        }
+
+        const demoSellerNames = ["Ana Paula Silva", "Carlos Eduardo Costa", "Mariana Alcantara", "Lucas Ferreira"];
+
         const salesCount = 15 + Math.floor(Math.random() * 10);
         for (let s = 0; s < salesCount; s++) {
           const day = 1 + Math.floor(Math.random() * 27);
@@ -396,6 +430,7 @@ export default function App() {
           
           const feeAmount = parseFloat((total * feeRate).toFixed(2));
           const netAmount = parseFloat((total - feeAmount).toFixed(2));
+          const seller = demoSellerNames[s % demoSellerNames.length];
 
           sales.push({
             id: `sale-${year}-${month}-${s}`,
@@ -404,7 +439,8 @@ export default function App() {
             total,
             paymentMethod,
             feeAmount,
-            netAmount
+            netAmount,
+            seller
           });
         }
       }
@@ -442,8 +478,19 @@ export default function App() {
           
           const hasSalesAndExpenses = Array.isArray(parsed.sales) && parsed.sales.length > 0;
           const { sales: demoSales, expenses: demoExpenses } = generateDemoData();
-          const sales = hasSalesAndExpenses ? parsed.sales : demoSales;
+          const rawSales = hasSalesAndExpenses ? parsed.sales : demoSales;
           const expenses = hasSalesAndExpenses ? parsed.expenses : demoExpenses;
+
+          const sellers = Array.isArray(parsed.sellers) && parsed.sellers.length > 0 ? parsed.sellers : DEFAULT_SELLERS;
+
+          // Ensure all sales have an attributed seller so commission calculations work
+          const sales = rawSales.map((s: Sale, index: number) => {
+            if (!s.seller || s.seller.trim() === "") {
+              const defaultAssigned = sellers[index % sellers.length]?.name || "Loja / Geral";
+              return { ...s, seller: defaultAssigned };
+            }
+            return s;
+          });
 
           // Merge initialUsers with parsed.users to ensure 'teste' exists
           let users = Array.isArray(parsed.users) ? parsed.users : initialUsers;
@@ -451,19 +498,24 @@ export default function App() {
             users = [{ id: "demo", email: "teste", password: "teste", roleId: "admin" }, ...users];
           }
 
+          // Ensure "Comissões" is in expense categories
+          const rawExpenseCats = Array.isArray(parsed.expenseCategories) ? parsed.expenseCategories : INITIAL_EXPENSE_CATEGORIES;
+          const expenseCategories = rawExpenseCats.includes("Comissões") ? rawExpenseCats : [...rawExpenseCats, "Comissões"];
+
           return {
             products,
             sales,
             expenses,
             users,
             roles: Array.isArray(parsed.roles) ? parsed.roles : initialRoles,
-            expenseCategories: Array.isArray(parsed.expenseCategories) ? parsed.expenseCategories : INITIAL_EXPENSE_CATEGORIES,
+            expenseCategories,
             productCategories: Array.isArray(parsed.productCategories) ? parsed.productCategories : INITIAL_PRODUCT_CATEGORIES,
             creditFee: typeof parsed.creditFee === 'number' ? parsed.creditFee : 3.99,
             debitFee: typeof parsed.debitFee === 'number' ? parsed.debitFee : 1.99,
             aboutUs: parsed.aboutUs || defaultAboutUs,
             silverCare: parsed.silverCare || defaultSilverCare,
-            contacts: parsed.contacts || defaultContacts
+            contacts: parsed.contacts || defaultContacts,
+            sellers
           };
         }
       } catch (e) {
@@ -484,7 +536,8 @@ export default function App() {
       debitFee: 1.99,
       aboutUs: defaultAboutUs,
       silverCare: defaultSilverCare,
-      contacts: defaultContacts
+      contacts: defaultContacts,
+      sellers: DEFAULT_SELLERS
     };
   });
 
@@ -663,9 +716,12 @@ export default function App() {
       <header className="fixed top-0 left-0 w-full bg-white border-b border-[#e5e5e5] z-50 h-20">
         <div className="max-w-7xl mx-auto h-full px-4 flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <div className="flex items-center gap-2">
-              <PackageCheck className="w-8 h-8" />
-              <h1 className="text-xl font-bold tracking-tighter hidden sm:block">PrataGestão</h1>
+            <div className="flex items-center gap-3">
+              <B2BLogo className="w-10 h-10" showShadow />
+              <div className="hidden sm:block">
+                <h1 className="text-lg font-black tracking-tight leading-none text-gray-900">B2B Pratas</h1>
+                <span className="text-[10px] text-gray-500 font-medium italic block mt-0.5">Negócio que prospera</span>
+              </div>
             </div>
 
             <nav className="hidden lg:flex items-center gap-1">
@@ -818,6 +874,7 @@ export default function App() {
           <Sales 
             sales={state.sales} 
             products={state.products} 
+            sellers={state.sellers}
             onAdd={addSale} 
             onDelete={deleteSale}
             initialView={activeSubTab === "new" ? "form" : "list"}
@@ -829,9 +886,14 @@ export default function App() {
           <Expenses 
             expenses={state.expenses} 
             categories={state.expenseCategories}
+            sales={state.sales}
+            sellers={state.sellers}
             onAdd={addExpense} 
             onDelete={deleteExpense}
+            onUpdateSellers={(sellers) => setState(prev => ({ ...prev, sellers }))}
             initialView={activeSubTab === "new" ? "form" : "list"}
+            activeSubTab={activeSubTab}
+            onSubTabChange={(sub) => setActiveSubTab(sub)}
           />
         )}
         {activeTab === "settings" && hasPermission("settings") && (
@@ -1754,9 +1816,10 @@ function ProductModal({ product, categories, onClose, onSave }: { product?: Prod
 }
 
 // --- Sales Component ---
-function Sales({ sales, products, onAdd, onDelete, initialView, creditFee, debitFee }: { 
+function Sales({ sales, products, sellers = [], onAdd, onDelete, initialView, creditFee, debitFee }: { 
   sales: Sale[], 
   products: Product[], 
+  sellers?: Seller[],
   onAdd: (s: Sale) => void, 
   onDelete: (id: string) => void, 
   initialView?: "list" | "form",
@@ -1775,7 +1838,7 @@ function Sales({ sales, products, onAdd, onDelete, initialView, creditFee, debit
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Vendas</h2>
-          <p className="text-[#9e9e9e]">Registre novas vendas e acompanhe o histórico</p>
+          <p className="text-[#9e9e9e]">Registre novas vendas com identificação de vendedor e acompanhe o histórico</p>
         </div>
         <button 
           onClick={() => setIsAdding(true)}
@@ -1792,6 +1855,7 @@ function Sales({ sales, products, onAdd, onDelete, initialView, creditFee, debit
             <thead>
               <tr className="bg-[#fcfcfc] border-y border-[#f5f5f5]">
                 <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Data</th>
+                <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Vendedor</th>
                 <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Itens</th>
                 <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Pagamento</th>
                 <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Total</th>
@@ -1801,13 +1865,23 @@ function Sales({ sales, products, onAdd, onDelete, initialView, creditFee, debit
             <tbody className="divide-y divide-[#f5f5f5]">
               {sales.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-[#9e9e9e]">Nenhuma venda registrada.</td>
+                  <td colSpan={6} className="px-6 py-12 text-center text-[#9e9e9e]">Nenhuma venda registrada.</td>
                 </tr>
               ) : (
                 [...sales].reverse().map(sale => (
                   <tr key={sale.id} className="hover:bg-[#fcfcfc] transition-colors group">
                     <td className="px-6 py-4 text-sm font-medium">
                       {format(parseISO(sale.date), "dd/MM/yyyy HH:mm")}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-full bg-black text-white text-[10px] font-black flex items-center justify-center">
+                          {(sale.seller || "L").charAt(0)}
+                        </span>
+                        <span className="text-xs font-bold text-gray-800">
+                          {sale.seller || "Loja / Geral"}
+                        </span>
+                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="space-y-1">
@@ -1846,6 +1920,7 @@ function Sales({ sales, products, onAdd, onDelete, initialView, creditFee, debit
       {isAdding && (
         <SaleModal 
           products={products}
+          sellers={sellers}
           creditFee={creditFee}
           debitFee={debitFee}
           onClose={() => setIsAdding(false)}
@@ -1859,8 +1934,9 @@ function Sales({ sales, products, onAdd, onDelete, initialView, creditFee, debit
   );
 }
 
-function SaleModal({ products, creditFee, debitFee, onClose, onSave }: { 
+function SaleModal({ products, sellers = [], creditFee, debitFee, onClose, onSave }: { 
   products: Product[], 
+  sellers?: Seller[],
   creditFee: number, 
   debitFee: number, 
   onClose: () => void, 
@@ -1868,6 +1944,9 @@ function SaleModal({ products, creditFee, debitFee, onClose, onSave }: {
 }) {
   const [cart, setCart] = useState<{ productId: string, quantity: number }[]>([]);
   const [paymentMethod, setPaymentMethod] = useState<Sale["paymentMethod"]>("Pix");
+  const [selectedSeller, setSelectedSeller] = useState<string>(
+    sellers.length > 0 ? sellers[0].name : "Loja / Geral"
+  );
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredProducts = useMemo(() => {
@@ -1972,6 +2051,28 @@ function SaleModal({ products, creditFee, debitFee, onClose, onSave }: {
           </div>
 
           <div className="space-y-4 border-t border-[#f5f5f5] pt-6">
+            {/* Vendedor Responsável */}
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-[#9e9e9e] uppercase tracking-wider flex items-center justify-between">
+                <span>Vendedor Responsável</span>
+                <span className="text-[10px] text-emerald-600 font-bold">
+                  comissão vinculada
+                </span>
+              </label>
+              <select
+                value={selectedSeller}
+                onChange={(e) => setSelectedSeller(e.target.value)}
+                className="w-full px-3 py-2.5 bg-white border border-[#e5e5e5] rounded-xl text-xs font-bold text-gray-800 outline-none focus:border-black transition-all shadow-sm"
+              >
+                {sellers.filter(s => s.active !== false).map(s => (
+                  <option key={s.id} value={s.name}>
+                    {s.name} ({s.commissionRate}%)
+                  </option>
+                ))}
+                <option value="Loja / Geral">Loja / Geral (Sem comissão direta)</option>
+              </select>
+            </div>
+
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-[#9e9e9e] uppercase tracking-wider">Forma de Pagamento</label>
               <div className="grid grid-cols-2 gap-2">
@@ -2024,6 +2125,7 @@ function SaleModal({ products, creditFee, debitFee, onClose, onSave }: {
                   paymentMethod,
                   feeAmount: fee,
                   netAmount: total - fee,
+                  seller: selectedSeller || "Loja / Geral",
                   items: cart.map(item => {
                     const p = products.find(prod => prod.id === item.productId)!;
                     return {
@@ -2047,75 +2149,237 @@ function SaleModal({ products, creditFee, debitFee, onClose, onSave }: {
 }
 
 // --- Expenses Component ---
-function Expenses({ expenses, categories, onAdd, onDelete, initialView }: { expenses: Expense[], categories: string[], onAdd: (e: Expense) => void, onDelete: (id: string) => void, initialView?: "list" | "form" }) {
+function Expenses({ 
+  expenses, 
+  categories, 
+  sales = [],
+  sellers = [],
+  onAdd, 
+  onDelete, 
+  onUpdateSellers,
+  initialView,
+  activeSubTab = "history",
+  onSubTabChange
+}: { 
+  expenses: Expense[], 
+  categories: string[], 
+  sales?: Sale[],
+  sellers?: Seller[],
+  onAdd: (e: Expense) => void, 
+  onDelete: (id: string) => void, 
+  onUpdateSellers?: (sellers: Seller[]) => void,
+  initialView?: "list" | "form",
+  activeSubTab?: string,
+  onSubTabChange?: (tab: string) => void
+}) {
+  const [currentTab, setCurrentTab] = useState<"history" | "commissions">(
+    activeSubTab === "commissions" ? "commissions" : "history"
+  );
   const [isAdding, setIsAdding] = useState(initialView === "form");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    if (initialView === "form") setIsAdding(true);
-    if (initialView === "list") setIsAdding(false);
-  }, [initialView]);
+    if (activeSubTab === "commissions") {
+      setCurrentTab("commissions");
+    } else if (activeSubTab === "history") {
+      setCurrentTab("history");
+    } else if (activeSubTab === "new") {
+      setCurrentTab("history");
+      setIsAdding(true);
+    }
+  }, [activeSubTab]);
+
+  const handleTabSwitch = (tab: "history" | "commissions") => {
+    setCurrentTab(tab);
+    if (onSubTabChange) onSubTabChange(tab);
+  };
+
+  const filteredExpenses = useMemo(() => {
+    return expenses.filter(e => {
+      const matchCat = categoryFilter === "all" || e.category === categoryFilter;
+      const matchSearch = !searchQuery.trim() || 
+        e.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        e.category.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchCat && matchSearch;
+    });
+  }, [expenses, categoryFilter, searchQuery]);
+
+  const totalFilteredExpenses = useMemo(() => {
+    return filteredExpenses.reduce((sum, e) => sum + e.amount, 0);
+  }, [filteredExpenses]);
 
   return (
     <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Despesas</h2>
-          <p className="text-[#9e9e9e]">Controle seus gastos e custos operacionais</p>
+          <h2 className="text-3xl font-bold tracking-tight">Despesas & Comissões</h2>
+          <p className="text-[#9e9e9e]">Controle seus custos operacionais, fornecedores e comissões da equipe de vendas</p>
         </div>
-        <button 
-          onClick={() => setIsAdding(true)}
-          className="bg-[#141414] text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-black transition-all shadow-lg shadow-black/10"
-        >
-          <Plus size={20} />
-          Nova Despesa
-        </button>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => setIsAdding(true)}
+            className="bg-[#141414] text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-black transition-all shadow-lg shadow-black/10"
+          >
+            <Plus size={20} />
+            Nova Despesa
+          </button>
+        </div>
       </header>
 
-      <div className="bg-white rounded-3xl shadow-sm border border-[#e5e5e5] overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-[#fcfcfc] border-y border-[#f5f5f5]">
-                <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Data</th>
-                <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Descrição</th>
-                <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Categoria</th>
-                <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Valor</th>
-                <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider text-right">Ações</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#f5f5f5]">
-              {expenses.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-[#9e9e9e]">Nenhuma despesa registrada.</td>
-                </tr>
-              ) : (
-                [...expenses].reverse().map(expense => (
-                  <tr key={expense.id} className="hover:bg-[#fcfcfc] transition-colors group">
-                    <td className="px-6 py-4 text-sm font-medium">
-                      {format(parseISO(expense.date), "dd/MM/yyyy")}
-                    </td>
-                    <td className="px-6 py-4 text-sm font-bold">{expense.description}</td>
-                    <td className="px-6 py-4">
-                      <span className="px-3 py-1 bg-[#f5f5f5] rounded-full text-xs font-bold text-[#4a4a4a]">
-                        {expense.category}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 font-bold text-sm text-red-500">-{formatCurrency(expense.amount)}</td>
-                    <td className="px-6 py-4 text-right">
-                      <button 
-                        onClick={() => onDelete(expense.id)}
-                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+      {/* Navigation Sub-Tabs */}
+      <div className="flex items-center gap-3 border-b border-[#e5e5e5] pb-4">
+        <button
+          onClick={() => handleTabSwitch("history")}
+          className={cn(
+            "flex items-center gap-2 px-5 py-2.5 rounded-2xl font-bold text-sm transition-all",
+            currentTab === "history"
+              ? "bg-black text-white shadow-md shadow-black/10"
+              : "bg-white text-[#4a4a4a] border border-[#e5e5e5] hover:bg-[#f5f5f5]"
+          )}
+        >
+          <TrendingDown size={16} />
+          Histórico de Despesas
+        </button>
+
+        <button
+          onClick={() => handleTabSwitch("commissions")}
+          className={cn(
+            "flex items-center gap-2 px-5 py-2.5 rounded-2xl font-bold text-sm transition-all relative",
+            currentTab === "commissions"
+              ? "bg-black text-white shadow-md shadow-black/10"
+              : "bg-white text-[#4a4a4a] border border-[#e5e5e5] hover:bg-[#f5f5f5]"
+          )}
+        >
+          <Award size={16} />
+          Comissões de Vendedores
+          <span className={cn(
+            "ml-1 text-[10px] px-2 py-0.5 rounded-full font-extrabold uppercase",
+            currentTab === "commissions" ? "bg-white text-black" : "bg-black text-white"
+          )}>
+            Novo
+          </span>
+        </button>
       </div>
+
+      {currentTab === "commissions" ? (
+        <SellerCommissions 
+          sales={sales}
+          expenses={expenses}
+          sellers={sellers}
+          onAddExpense={onAdd}
+          onUpdateSellers={onUpdateSellers || (() => {})}
+        />
+      ) : (
+        <div className="space-y-6">
+          {/* Filters Bar */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="relative w-full sm:w-72">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9e9e9e]" size={14} />
+              <input 
+                type="text" 
+                placeholder="Buscar despesa..." 
+                className="w-full pl-9 pr-3 py-2.5 bg-white border border-[#e5e5e5] rounded-2xl text-xs outline-none focus:border-black transition-all shadow-sm"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
+              <button
+                onClick={() => setCategoryFilter("all")}
+                className={cn(
+                  "px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap",
+                  categoryFilter === "all" ? "bg-black text-white" : "bg-[#f5f5f5] text-[#4a4a4a] hover:bg-gray-200"
+                )}
+              >
+                Todas ({expenses.length})
+              </button>
+              {categories.map(cat => {
+                const count = expenses.filter(e => e.category === cat).length;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setCategoryFilter(cat)}
+                    className={cn(
+                      "px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap",
+                      categoryFilter === cat ? "bg-black text-white" : "bg-[#f5f5f5] text-[#4a4a4a] hover:bg-gray-200"
+                    )}
+                  >
+                    {cat} ({count})
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="bg-white rounded-3xl shadow-sm border border-[#e5e5e5] overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="bg-[#fcfcfc] border-y border-[#f5f5f5]">
+                    <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Data</th>
+                    <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Descrição</th>
+                    <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Categoria</th>
+                    <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider">Valor</th>
+                    <th className="px-6 py-4 text-xs font-bold text-[#9e9e9e] uppercase tracking-wider text-right">Ações</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#f5f5f5]">
+                  {filteredExpenses.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="px-6 py-12 text-center text-[#9e9e9e]">Nenhuma despesa encontrada.</td>
+                    </tr>
+                  ) : (
+                    [...filteredExpenses].reverse().map(expense => (
+                      <tr key={expense.id} className="hover:bg-[#fcfcfc] transition-colors group">
+                        <td className="px-6 py-4 text-sm font-medium">
+                          {format(parseISO(expense.date), "dd/MM/yyyy")}
+                        </td>
+                        <td className="px-6 py-4 text-sm font-bold text-gray-900">{expense.description}</td>
+                        <td className="px-6 py-4">
+                          <span className={cn(
+                            "px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1",
+                            expense.category === "Comissões"
+                              ? "bg-purple-50 text-purple-700 border border-purple-200"
+                              : "bg-[#f5f5f5] text-[#4a4a4a]"
+                          )}>
+                            {expense.category === "Comissões" && <Award size={12} />}
+                            {expense.category}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 font-bold text-sm text-red-500">-{formatCurrency(expense.amount)}</td>
+                        <td className="px-6 py-4 text-right">
+                          <button 
+                            onClick={() => onDelete(expense.id)}
+                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                            title="Excluir despesa"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+                {filteredExpenses.length > 0 && (
+                  <tfoot>
+                    <tr className="bg-gray-50/80 font-bold border-t border-[#f5f5f5]">
+                      <td colSpan={3} className="px-6 py-3.5 text-xs text-gray-500 uppercase tracking-wider">
+                        Total das despesas ({filteredExpenses.length} itens)
+                      </td>
+                      <td className="px-6 py-3.5 text-sm text-red-600 font-black">
+                        -{formatCurrency(totalFilteredExpenses)}
+                      </td>
+                      <td></td>
+                    </tr>
+                  </tfoot>
+                )}
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
 
       {isAdding && (
         <ExpenseModal 
@@ -2152,12 +2416,13 @@ function Login({ users, onLogin, onBack }: { users: User[], onLogin: (u: User) =
     <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center p-4 font-sans">
       <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
         <div className="p-12">
-          <div className="flex flex-col items-center mb-6">
-            <div className="w-16 h-16 bg-[#141414] text-white rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-black/20">
-              <PackageCheck size={32} />
-            </div>
-            <h1 className="text-3xl font-bold tracking-tighter">PrataGestão</h1>
-            <p className="text-sm text-[#9e9e9e] mt-2 font-medium uppercase tracking-widest">
+          <div className="flex flex-col items-center mb-6 text-center">
+            <B2BLogo className="w-28 h-28 mb-3" showShadow />
+            <h1 className="text-3xl font-black tracking-tight text-gray-900">B2B Pratas</h1>
+            <p className="text-xs text-gray-500 font-semibold italic mt-0.5">
+              Negócio que prospera
+            </p>
+            <p className="text-[11px] text-[#9e9e9e] mt-2 font-bold uppercase tracking-widest">
               Acesso Administrativo
             </p>
           </div>
@@ -3175,7 +3440,7 @@ function Showcase({
   const handleCheckoutCartWhatsApp = () => {
     if (cart.length === 0) return;
     
-    let message = `Olá! Gostaria de finalizar meu pedido da vitrine *PrataGestão*:\n\n*🛍️ Itens do Pedido:*\n`;
+    let message = `Olá! Gostaria de finalizar meu pedido da vitrine *B2B Pratas*:\n\n*🛍️ Itens do Pedido:*\n`;
     
     cart.forEach((item, index) => {
       const info = getDiscountInfo(item.product);
@@ -3326,20 +3591,15 @@ function Showcase({
 
       {/* Hero Section */}
       <header className="relative h-screen flex items-center justify-center overflow-hidden bg-[#0a0a0a]">
-        <div className="absolute inset-0 opacity-40">
-          <img 
-            src="https://images.unsplash.com/photo-1611085583191-a3b13b94b421?q=80&w=2070&auto=format&fit=crop" 
-            alt="Silver Jewelry Background" 
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-        </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60" />
         
         <nav className="absolute top-0 left-0 w-full p-6 md:p-8 flex items-center justify-between z-10">
-          <div className="flex items-center gap-2 text-white">
-            <PackageCheck size={32} />
-            <span className="text-2xl font-bold tracking-tighter uppercase">PrataGestão</span>
+          <div className="flex items-center gap-3 text-white">
+            <B2BLogo className="w-12 h-12" showShadow />
+            <div>
+              <span className="text-2xl font-black tracking-tight uppercase block leading-none text-white">B2B Pratas</span>
+              <span className="text-[11px] text-gray-200 font-medium italic hidden sm:block mt-0.5">Negócio que prospera</span>
+            </div>
           </div>
           
           <div className="flex items-center gap-3">
@@ -4094,12 +4354,15 @@ function Showcase({
       <footer className="bg-[#0a0a0a] text-white py-20 px-4">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-white/10 pb-20">
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-2 mb-8">
-              <PackageCheck size={32} />
-              <span className="text-2xl font-bold tracking-tighter uppercase">PrataGestão</span>
+            <div className="flex items-center gap-3 mb-6">
+              <B2BLogo className="w-14 h-14" showShadow />
+              <div>
+                <span className="text-2xl font-black tracking-tight uppercase block leading-none text-white">B2B Pratas</span>
+                <span className="text-xs text-gray-400 font-medium italic block mt-0.5">Negócio que prospera</span>
+              </div>
             </div>
-            <p className="text-gray-400 max-w-sm text-lg leading-relaxed">
-              Especialistas em joias de prata 925. Qualidade, sofisticação e atendimento personalizado para você brilhar em qualquer ocasião.
+            <p className="text-gray-400 max-w-sm text-base leading-relaxed">
+              B2B Pratas • Especialistas em joias em Prata 925 legítima. Atacado e varejo com qualidade, sofisticação e o brilho que impulsiona o seu negócio.
             </p>
           </div>
           
@@ -4116,7 +4379,7 @@ function Showcase({
           <div>
             <h4 className="font-bold text-lg mb-8">Contato</h4>
             <ul className="space-y-4 text-gray-400 font-medium">
-              <li>{contacts.email || "contato@pratagestao.com.br"}</li>
+              <li>{contacts.email || "contato@b2bpratas.com.br"}</li>
               <li>{contacts.phone || "(11) 99999-9999"}</li>
               <li>São Paulo, SP</li>
             </ul>
@@ -4124,7 +4387,7 @@ function Showcase({
         </div>
         
         <div className="max-w-7xl mx-auto pt-10 flex flex-col md:flex-row items-center justify-between gap-4 text-gray-500 text-sm font-medium">
-          <p>© 2024 PrataGestão. Todos os direitos reservados.</p>
+          <p>© 2026 B2B Pratas. Negócio que prospera. Todos os direitos reservados.</p>
           <div className="flex items-center gap-8">
             {contacts.instagram && (
               <a href={contacts.instagram.startsWith('http') ? contacts.instagram : `https://instagram.com/${contacts.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram</a>

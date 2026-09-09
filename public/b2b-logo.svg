@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <!-- Solid Black Background as requested: always black background because logo is 100% white -->
+  <rect width="400" height="400" rx="80" fill="#000000" />
+
+  <!-- 100% White 3-Buildings Architectural Icon -->
+  <g fill="#ffffff">
+    <!-- LEFT BUILDING -->
+    <!-- Left Building - Left Side Wall (Solid White Facet) -->
+    <polygon points="26,370 42,136 68,108 52,370" />
+
+    <!-- Left Building - Front Face (With Windows) -->
+    <polygon points="52,370 68,108 112,128 94,370" />
+
+    <!-- CENTER BUILDING -->
+    <!-- Center Building - Left Half -->
+    <polygon points="98,370 114,354 126,82 196,28 196,370" />
+
+    <!-- Center Building - Right Half -->
+    <polygon points="204,28 274,82 286,354 302,370 204,370" />
+
+    <!-- RIGHT BUILDING -->
+    <!-- Right Building - Front Face (With Windows) -->
+    <polygon points="306,370 288,162 332,142 350,370" />
+
+    <!-- Right Building - Right Side Wall (Solid White Facet) -->
+    <polygon points="350,370 332,142 358,162 374,370" />
+  </g>
+
+  <!-- Black Window Cutouts (Reveal background through the white buildings) -->
+  <g fill="#000000">
+    <!-- Left Building Windows (6 angled slots) -->
+    <polygon points="62,146 100,164 99,178 61,160" />
+    <polygon points="60,184 98,202 97,216 59,198" />
+    <polygon points="58,222 96,240 95,254 57,236" />
+    <polygon points="56,260 94,278 93,292 55,274" />
+    <polygon points="54,298 92,316 91,330 53,312" />
+    <polygon points="52,336 90,354 89,366 51,350" />
+
+    <!-- Center Building - Left Half Windows (7 angled slots following perspective) -->
+    <polygon points="135,108 190,66 190,82 133,124" />
+    <polygon points="130,146 190,104 190,120 128,162" />
+    <polygon points="126,184 190,142 190,158 124,200" />
+    <polygon points="121,222 190,180 190,196 119,238" />
+    <polygon points="117,260 190,218 190,234 115,276" />
+    <polygon points="112,298 190,256 190,272 110,314" />
+    <polygon points="107,336 190,294 190,312 105,352" />
+
+    <!-- Center Building - Right Half Windows (7 mirrored angled slots) -->
+    <polygon points="210,66 265,108 267,124 210,82" />
+    <polygon points="210,104 270,146 272,162 210,120" />
+    <polygon points="210,142 274,184 276,200 210,158" />
+    <polygon points="210,180 279,222 281,238 210,196" />
+    <polygon points="210,218 283,260 285,276 210,234" />
+    <polygon points="210,256 288,298 290,314 210,272" />
+    <polygon points="210,294 293,336 295,352 210,312" />
+
+    <!-- Right Building Windows (6 angled slots) -->
+    <polygon points="298,180 338,162 340,176 300,194" />
+    <polygon points="300,218 340,200 342,214 302,232" />
+    <polygon points="302,256 342,238 344,252 304,270" />
+    <polygon points="304,294 344,276 346,290 306,308" />
+    <polygon points="306,332 346,314 348,328 308,346" />
+    <polygon points="308,360 348,344 349,356 309,368" />
+  </g>
+</svg>

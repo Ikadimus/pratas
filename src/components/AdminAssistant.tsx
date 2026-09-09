@@ -239,7 +239,7 @@ export function AdminAssistant({ activeTab, activeSubTab }: AdminAssistantProps)
   const [messages, setMessages] = useState<Message[]>([
     { 
       role: "model", 
-      text: "Olá! Eu sou o **Prateado**, seu assistente especializado do PrataGestão ✨.\n\nEstou aqui para tirar qualquer dúvida sobre **como utilizar e para que serve cada campo** do painel administrativo. Pode me perguntar qualquer coisa ou clicar nos tópicos rápidos abaixo!" 
+      text: "Olá! Eu sou o **Prateado**, seu assistente especializado da **B2B Pratas** ✨.\n\nEstou aqui para tirar qualquer dúvida sobre **como utilizar e para que serve cada campo** do painel administrativo. Pode me perguntar qualquer coisa ou clicar nos tópicos rápidos abaixo!" 
     }
   ]);
   const [input, setInput] = useState("");
@@ -328,7 +328,7 @@ export function AdminAssistant({ activeTab, activeSubTab }: AdminAssistantProps)
       } else if (lower.includes("jogo") || lower.includes("conjunto")) {
         fallback = `Ao marcar **"É um Jogo / Conjunto?"** no cadastro de produto, você pode cadastrar joias compostas (ex: Brinco + Colar). O sistema permite listar os componentes individuais e soma os custos de cada um para gerar o custo total do conjunto!`;
       } else if (lower.includes("venda") || lower.includes("taxa") || lower.includes("cartão")) {
-        fallback = `No módulo de **Vendas**, ao selecionar pagamento por Cartão (Crédito ou Débito), o PrataGestão desconta automaticamente a taxa que você configurou em Configurações > Taxas de Cartão. Dessa forma, seu Dashboard exibe o valor líquido que realmente cairá na sua conta.`;
+        fallback = `No módulo de **Vendas**, ao selecionar pagamento por Cartão (Crédito ou Débito), o B2B Pratas desconta automaticamente a taxa que você configurou em Configurações > Taxas de Cartão. Dessa forma, seu Dashboard exibe o valor líquido que realmente cairá na sua conta.`;
       } else if (lower.includes("dashboard") || lower.includes("lucro")) {
         fallback = `O **Dashboard Financeiro** consolida Faturamento Bruto, Despesas Totais e Lucro Líquido Real. O lucro líquido calcula exatamente a receita subtraída do custo das peças (CMV), taxas de cartão e despesas operacionais da joalheria.`;
       } else {

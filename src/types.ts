@@ -37,6 +37,15 @@ export interface SaleItem {
   nameAtSale: string;
 }
 
+export interface Seller {
+  id: string;
+  name: string;
+  commissionRate: number; // Porcentagem padrão de comissão (ex: 5 para 5%)
+  phone?: string;
+  email?: string;
+  active?: boolean;
+}
+
 export interface Sale {
   id: string;
   date: string;
@@ -45,6 +54,7 @@ export interface Sale {
   paymentMethod: "Crédito" | "Débito" | "Pix" | "Dinheiro" | "Cartão";
   feeAmount?: number;
   netAmount?: number;
+  seller?: string;
 }
 
 export interface Expense {
@@ -89,4 +99,5 @@ export interface AppState {
   aboutUs: string;
   silverCare: string;
   contacts: Contacts;
+  sellers: Seller[];
 }

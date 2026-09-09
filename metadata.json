@@ -1,6 +1,6 @@
 {
   "name": "PrataGestão - Controle de Joalheria",
-  "description": "Sistema completo de gestão para lojas de prata, incluindo controle de estoque, vendas e finanças.",
+  "description": "Sistema completo de gestão e vitrine para B2B Pratas - Joias em Prata 925 legítima. Negócio que prospera.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
